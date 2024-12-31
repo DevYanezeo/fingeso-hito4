@@ -23,9 +23,9 @@ public class VehiculoServicio {
 	// Entrada: Datos de un vehículo
 	// Descripción: Toma los datos del vehículo a agregar y lo agrega
 	// Salida: El vehículo registrado
-	public Vehiculo registrarVehiculo(String patente, String marca, String modelo, String categoria, String estado, Sucursal sucursal, String transmision, String combustible, String kilometraje, String imagenUrl) {
+	public Vehiculo registrarVehiculo(String patente, String marca, String modelo, String categoria, String estado, Sucursal sucursal, String transmision, String combustible, String kilometraje, String imagenUrl, int pasajeros, int puertas, int tarifaDiaria) {
 		// Crear nuevo vehículo con todos los atributos, incluyendo patente
-		Vehiculo vehiculo = new Vehiculo(patente, marca, modelo, categoria, estado, sucursal, transmision, combustible, kilometraje, imagenUrl);
+		Vehiculo vehiculo = new Vehiculo(patente, marca, modelo, categoria, estado, sucursal, transmision, combustible, kilometraje, imagenUrl, pasajeros, puertas, tarifaDiaria);
 
 		// Verificar si existe un vehículo con la misma patente (puedes cambiar esta lógica según tus necesidades)
 		Optional<Vehiculo> existenteOptional = vehiculoRepositorio.findById(vehiculo.getId());

@@ -3,7 +3,6 @@ package autorentaschile.backend.Entidades;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "vehiculo")
@@ -23,11 +22,12 @@ public class Vehiculo {
 	private String modelo;
 	private String categoria; // Auto, moto, etc.
 	private String estado; // Disponible o no
-
+	private int pasajeros;
+	private int puertas;
+	private int tarifaDiaria;
 	@ManyToOne
 	@JoinColumn(name = "sucursal_id")
 	private Sucursal sucursal;
-
 	private String transmision;
 	private String combustible;
 	private String kilometraje;
@@ -38,7 +38,7 @@ public class Vehiculo {
 	}
 
 	// Constructor con todos los atributos
-	public Vehiculo(String patente, String marca, String modelo, String categoria, String estado, Sucursal sucursal, String transmision, String combustible, String kilometraje, String imagenUrl) {
+	public Vehiculo(String patente, String marca, String modelo, String categoria, String estado, Sucursal sucursal, String transmision, String combustible, String kilometraje, String imagenUrl, int pasajeros, int puertas, int tarifaDiaria) {
 		this.patente = patente;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -49,24 +49,26 @@ public class Vehiculo {
 		this.combustible = combustible;
 		this.kilometraje = kilometraje;
 		this.imagenUrl = imagenUrl;
+		this.pasajeros = pasajeros;
+		this.puertas = puertas;
+		this.tarifaDiaria = tarifaDiaria;
+
 	}
 
-	// Getter y Setter para patente
-	public String getPatente() {
-		return patente;
-	}
-
-	public void setPatente(String patente) {
-		this.patente = patente;
-	}
-
-	// Otros getters y setters
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getPatente() {
+		return patente;
+	}
+
+	public void setPatente(String patente) {
+		this.patente = patente;
 	}
 
 	public String getMarca() {
@@ -101,6 +103,30 @@ public class Vehiculo {
 		this.estado = estado;
 	}
 
+	public int getPasajeros() {
+		return pasajeros;
+	}
+
+	public void setPasajeros(int pasajeros) {
+		this.pasajeros = pasajeros;
+	}
+
+	public int getPuertas() {
+		return puertas;
+	}
+
+	public void setPuertas(int puertas) {
+		this.puertas = puertas;
+	}
+
+	public int getTarifaDiaria() {
+		return tarifaDiaria;
+	}
+
+	public void setTarifaDiaria(int tarifaDiaria) {
+		this.tarifaDiaria = tarifaDiaria;
+	}
+
 	public Sucursal getSucursal() {
 		return sucursal;
 	}
@@ -132,9 +158,11 @@ public class Vehiculo {
 	public void setKilometraje(String kilometraje) {
 		this.kilometraje = kilometraje;
 	}
+
 	public String getImagenUrl() {
 		return imagenUrl;
 	}
+
 	public void setImagenUrl(String imagenUrl) {
 		this.imagenUrl = imagenUrl;
 	}

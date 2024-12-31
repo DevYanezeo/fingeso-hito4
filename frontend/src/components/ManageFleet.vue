@@ -33,25 +33,14 @@
         <div v-if="agrupadosPorCategoria && Object.keys(agrupadosPorCategoria).length > 0">
           <div v-for="(vehiculosCategoria, categoria) in agrupadosPorCategoria" :key="categoria" class="categoria-container">
             <h4 class="categoria-titulo">{{ categoria }}</h4>
+            <!-- Usar el componente CardCar para cada vehículo -->
             <div class="vehiculos-grid">
-              <div v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" class="vehiculo-card">
-                <div class="data-img">
-                  
-                  <p><strong>Patente:</strong> {{ vehiculo.patente }}</p>
-                  <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
-                  <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
-                  <p><strong>Estado:</strong> {{ vehiculo.estado }}</p>
-                  <p><strong>Kilometraje:</strong> {{ vehiculo.kilometraje }}</p>
-                  <img v-if="vehiculo.imagenUrl" :src="`/Vehiculos/${vehiculo.imagenUrl}`" alt="Imagen del vehículo" class="vehiculo-image" />
-                </div>
-              
-                <!-- Botón para modificar -->
-                <div class="btn-container">
-                  <button @click="abrirFormularioIngreso(vehiculo)" class="btn-modificar">Modificar</button>
-                  <button @click="eliminarVehiculo(vehiculo)" class="btn-eliminar">Eliminar</button>
-                </div>
+              <card-car 
+                v-for="vehiculo in vehiculosCategoria" 
+                :key="vehiculo.id" 
+                :vehiculo="vehiculo" 
+                @eliminar="eliminarVehiculo(vehiculo)" />
               </div>
-            </div>
           </div>
         </div>
         <!-- Mensaje si no hay vehículos en esta sucursal -->
@@ -111,8 +100,13 @@
 
 
 <script>
+import CardCar from './AdminCardCar.vue';  // Asegúrate de importar el componente CardCar
+
 export default {
   name: 'ManageFleet',
+  components: {
+    CardCar  // Declarar el componente para su uso en este archivo
+  },
   data() {
     return {
       sucursales: [], 
@@ -129,10 +123,9 @@ export default {
         estado: '',
         sucursalId: null,
         transmision: '',
-        combustible: '',
-        kilometraje: '',
-        imagenUrl: ''
-      }
+        combustible: ''
+      },
+      agrupadosPorCategoria: {}
     };
   },
   mounted() {
@@ -177,7 +170,6 @@ export default {
         return agrupados;
       }, {});
     },
-  
     // Abre el formulario de ingreso de vehículo
     abrirFormularioIngreso(vehiculo = null) {
       this.formularioVisible = true;
@@ -233,32 +225,37 @@ export default {
           const vehiculoGuardado = await response.json();
           if (this.nuevoVehiculo.id) {
             const index = this.vehiculos.findIndex(v => v.id === vehiculoGuardado.id);
-            this.vehiculos.splice(index, 1, vehiculoGuardado);
+            if (index !== -1) {
+              this.vehiculos.splice(index, 1, vehiculoGuardado);
+            }
           } else {
             this.vehiculos.push(vehiculoGuardado);
           }
+          this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
           this.cerrarFormularioIngreso();
         } else {
           console.error('Error al guardar el vehículo');
         }
       } catch (error) {
-        console.error('Error al enviar los datos del vehículo:', error);
+        console.error('Error al ingresar/modificar el vehículo:', error);
       }
     },
-    // Elimina un vehículo de la sucursal
-    async eliminarVehiculo(vehiculo) {
-      console.log('ID del vehículo a eliminar:', vehiculo.id);
-      try {
-        const response = await fetch(`http://localhost:8080/api/vehiculo/eliminarVehiculo?id=${vehiculo.id}`, {
+    eliminarVehiculo(vehiculo) {
+      if (confirm('¿Seguro que deseas eliminar este vehículo?')) {
+        fetch(`http://localhost:8080/api/vehiculo/eliminarVehiculo/${vehiculo.id}`, {
           method: 'DELETE'
-        });
-        if (response.ok) {
-          this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculo.id);
-        } else {
-          console.error('Error al eliminar el vehículo');
-        }
-      } catch (error) {
-        console.error('Error al eliminar el vehículo:', error);
+        })
+          .then(response => {
+            if (response.ok) {
+              this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculo.id);
+              this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
+            } else {
+              console.error('Error al eliminar el vehículo');
+            }
+          })
+          .catch(error => {
+            console.error('Error al eliminar el vehículo:', error);
+          });
       }
     }
   }
@@ -372,57 +369,6 @@ input:focus {
   display: flex;
   flex-wrap: wrap; /* Permite que las tarjetas se ajusten cuando no hay suficiente espacio en una fila */
   gap: 20px; /* Espacio entre las tarjetas */
-}
-
-.vehiculo-card {
-  display: flex; /* Usar flexbox para alinear la imagen y los datos */
-  flex-direction: column; /* Asegura que la imagen y los datos estén en una fila */
-  background: #fff;
-  padding: 20px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  box-sizing: border-box;
-  min-width: 80%; /* Tamaño máximo de la tarjeta */
-  margin-bottom: 20px;
-}
-.data-img{
-  display: flex;
-  justify-content: space-between;
-
-}
-.data-img p{
-  display: flex;
-  flex-direction: column;
-  font-size: 16px;
-}
-.vehiculo-image {
-  width: 150px; /* Tamaño de la imagen, ajusta según tu preferencia */
-  height: auto;
-  border-radius: 8px;
-}
-
-
-.vehiculo-card .contenido {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Distribuye el contenido de manera ordenada */
-}
-
-.vehiculo-card .btn-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.vehiculo-card button {
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .btn-modificar {

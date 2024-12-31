@@ -43,7 +43,10 @@ public class VehiculoControlador {
 				nuevoVehiculo.getTransmision(),
 				nuevoVehiculo.getCombustible(),
 				nuevoVehiculo.getKilometraje(),
-				nuevoVehiculo.getImagenUrl()
+				nuevoVehiculo.getImagenUrl(),
+				nuevoVehiculo.getPasajeros(),
+				nuevoVehiculo.getPuertas(),
+				nuevoVehiculo.getTarifaDiaria()
 		);
 	}
 
