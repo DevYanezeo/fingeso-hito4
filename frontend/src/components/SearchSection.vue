@@ -52,60 +52,105 @@
         <button type="submit" @click.prevent="buscarVehiculos">Buscar</button>
       </div>
     </form>
+
+    <!-- Resultados -->
+    <div v-if="vehiculos.length" class="results">
+      <h3>Vehículos Disponibles</h3>
+      <!-- Agrupar vehículos por categoría -->
+      <div v-if="agrupadosPorCategoria && Object.keys(agrupadosPorCategoria).length > 0">
+        <div v-for="(vehiculosCategoria, categoria) in agrupadosPorCategoria" :key="categoria" class="categoria-container">
+          <h4 class="categoria-titulo">{{ categoria }}</h4>
+          <div class="vehiculos-grid">
+            <!-- Usar el componente CardCar para cada vehículo en la categoría -->
+            <card-car v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" :vehiculo="vehiculo" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
+<script>
+import CardCar from './UserCardCar.vue'; // Asegúrate de importar el componente CardCar
 
-// Variables reactivas
-const sucursales = ref([]);
-const selectedSucursalRetiro = ref('');
-const selectedSucursalDevolucion = ref('');
-const pickupDate = ref('');
-const returnDate = ref('');
-const selectedVehicleType = ref('');
-const tiposVehiculo = ref('');
+export default {
+  name: "BuscarVehiculos",
+  components: {
+    CardCar,
+  },
+  data() {
+    return {
+      sucursales: [], // Lista de sucursales
+      selectedSucursalRetiro: '', // Sucursal de retiro seleccionada
+      selectedSucursalDevolucion: '', // Sucursal de devolución seleccionada
+      pickupDate: '', // Fecha de retiro
+      returnDate: '', // Fecha de devolución
+      selectedVehicleType: '', // Tipo de vehículo seleccionado
+      tiposVehiculo: [], // Lista de tipos de vehículos
+      vehiculos: [], // Lista de vehículos encontrados
+      agrupadosPorCategoria: {}, // Vehículos agrupados por categoría
+    };
+  },
+  methods: {
+    // Función para cargar las sucursales
+    async cargarSucursales() {
+      try {
+        const response = await fetch('http://localhost:8080/api/sucursal');
+        const data = await response.json();
+        this.sucursales = data;
+      } catch (error) {
+        console.error('Error al cargar las sucursales:', error);
+      }
+    },
 
-// Función para cargar las sucursales
-const cargarSucursales = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/api/sucursal');
-    const data = await response.json();
-    sucursales.value = data;
-  } catch (error) {
-    console.error('Error al cargar las sucursales:', error);
-  }
+    // Función para cargar los tipos de vehículos
+    async cargarCategorias() {
+      try {
+        const response = await fetch('http://localhost:8080/api/vehiculo/tipos');
+        const data = await response.json();
+        this.tiposVehiculo = data;
+      } catch (error) {
+        console.error('Error al cargar las categorías:', error);
+      }
+    },
+
+    // Función para buscar vehículos disponibles
+    async buscarVehiculos() {
+      if (!this.selectedSucursalRetiro) {
+        console.error('Debe seleccionar una sucursal de retiro');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/vehiculo/sucursal/${this.selectedSucursalRetiro}`);
+        const data = await response.json();
+        this.vehiculos = data;
+
+        // Agrupar vehículos por categoría
+        this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
+      } catch (error) {
+        console.error('Error al buscar los vehículos:', error);
+      }
+    },
+
+    // Función para agrupar vehículos por categoría
+    agruparPorCategoria(vehiculos) {
+      return vehiculos.reduce((agrupados, vehiculo) => {
+        const categoria = vehiculo.categoria || 'Sin categoría';
+        if (!agrupados[categoria]) {
+          agrupados[categoria] = [];
+        }
+        agrupados[categoria].push(vehiculo);
+        return agrupados;
+      }, {});
+    },
+  },
+  mounted() {
+    // Cargar datos al montar el componente
+    this.cargarSucursales();
+  },
 };
-
-//Funcion para cargar las categorias de vehiculos
-const cargarCategorias = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/api/vehiculo');
-    const data = await response.json();
-    selectedVehicleType.value = data;
-  } catch (error) {
-    console.error('Error al cargar las categorias:', error);
-  }
-};
-
-// Función para buscar vehículos disponibles
-const buscarVehiculos = () => {
-  console.log('Sucursal de Retiro:', selectedSucursalRetiro.value);
-  console.log('Sucursal de Devolución:', selectedSucursalDevolucion.value);
-  console.log('Fecha de Retiro:', pickupDate.value);
-  console.log('Fecha de Devolución:', returnDate.value);
-  console.log('Tipo de Vehículo:', selectedVehicleType.value);
-  // Aquí puedes implementar la lógica para enviar la solicitud al backend
-};
-
-// Hook del ciclo de vida para cargar datos al montar el componente
-onMounted(() => {
-  cargarSucursales();
-  cargarCategorias();
-});
 </script>
-
 
 <style scoped>
 .search-form {
@@ -145,7 +190,6 @@ onMounted(() => {
   gap: 8px;
   padding: 10px;
   justify-content: center;
-
 }
 
 .search-form label {
@@ -195,15 +239,26 @@ onMounted(() => {
 
 .search-form .checkbox {
   display: flex;
-  align-items: center;
   gap: 10px;
 }
 
-.search-form .form-button {
+.search-form .results {
+  margin-top: 30px;
+}
+
+.search-form .categoria-container {
+  margin-bottom: 30px;
+}
+
+.search-form .categoria-titulo {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.search-form .vehiculos-grid {
   display: flex;
-  justify-content: center;
-  height: 40px;
-  padding-left: 80px;
-  margin-top: 40px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 </style>

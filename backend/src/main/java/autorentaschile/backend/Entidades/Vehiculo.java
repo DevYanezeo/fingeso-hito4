@@ -20,7 +20,7 @@ public class Vehiculo {
 
 	private String marca;
 	private String modelo;
-	private String categoria; // Auto, moto, etc.
+	private String categoria;
 	private String estado; // Disponible o no
 	private int pasajeros;
 	private int puertas;

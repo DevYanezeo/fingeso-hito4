@@ -1,6 +1,6 @@
 package autorentaschile.backend.Entidades;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.util.Date;
 @Entity
 @Table(name = "reserva")
@@ -45,8 +45,6 @@ public class Reserva {
     public Reserva() {
 
     }
-
-    // Getters y Setters
 
     public Long getIdReserva() {
         return idReserva;
@@ -112,12 +110,12 @@ public class Reserva {
         this.patenteVehiculoAsignado = patenteVehiculoAsignado;
     }
 
-    public String getEstado() {
+    public String getEstadoReserva() {
         return estadoReserva;
     }
 
-    public void setEstado(String estado) {
-        this.estadoReserva = estado;
+    public void setEstadoReserva(String estadoReserva) {
+        this.estadoReserva = estadoReserva;
     }
 
     public Date getFechaCreacion() {

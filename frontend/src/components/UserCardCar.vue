@@ -11,29 +11,24 @@
         />
       </div>
       <div class="nombres">
-        <p class="marca-modelo">{{ vehiculo.marca }} {{ vehiculo.modelo }} o similar</p>
+        <p class="marca-modelo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</p>
         <p v-if="vehiculo.descripcion" class="descripcion">{{ vehiculo.descripcion }}</p>
-        <p class="kilometraje">Kilometraje: {{ vehiculo.kilometraje }} km</p>
       </div>
-      <div class="iconos">
-        <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
-        <div><span>🧳</span> {{ vehiculo.equipajeGrande }} grande, {{ vehiculo.equipajePequeño }} pequeña</div>
-        <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
-        <div><span>⛽</span> {{ vehiculo.combustible }}</div>
-        <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
-      </div>
+
     </div>
 
     <!-- Detalles adicionales del vehículo -->
     <div class="detalles">
       <div class="tarifa">
-        <p><strong>Patente:</strong> {{ vehiculo.patente }}</p>
-        <p>{{ vehiculo.fechaInicio }} - {{ vehiculo.fechaFin }}</p>
-        <p>{{ vehiculo.ubicacion }}</p>
+        <div class="iconos">
+          <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
+          <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
+          <div><span>⛽</span> {{ vehiculo.combustible }}</div>
+          <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
+        </div>
         <p class="tarifa-titulo">TARIFA DIARIA</p>
-        <p class="tarifa-precio">${{ vehiculo.tarifa }} <span>(IVA incluido)</span></p>
-        <p class="tarifa-sin-iva">${{ vehiculo.tarifaSinIva }} + IVA</p>
-        <button class="btn-seleccionar" @click="seleccionarVehiculo">SELECCIONAR</button>
+        <p class="tarifa-precio">${{ vehiculo.tarifaDiaria }}</p>
+        <button class="btn-seleccionar" @click="seleccionarVehiculo">RESERVAR</button>
         <p class="terminos">Términos y condiciones</p>
       </div>
     </div>
@@ -64,12 +59,11 @@ export default {
   justify-content: space-between;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 16px;
+  padding: 10px;
   background-color: white;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  gap: 16px;
-  align-items: center;
-  width: 100%;
+  gap: 40px;
+  width: 80%;
 }
 
 .info-vehiculo {
@@ -79,11 +73,28 @@ export default {
   align-items: center;
 }
 
-.imagenes img {
-  max-width: 180px;
+.imagenes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #e7e7e793;
+  padding: 20px;
+  max-width: 100px;
   max-height: 100px;
+  border: 0.5px solid #00000019;
+  border-radius: 6px;
+
+
+}
+.imagenes img {
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
   margin-bottom: 16px;
+  padding: 10px;
+  margin: 30px;
 }
 
 .nombres {
