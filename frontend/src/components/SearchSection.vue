@@ -52,22 +52,20 @@
         <button type="submit" @click.prevent="buscarVehiculos">Buscar</button>
       </div>
     </form>
-
-    <!-- Resultados -->
-    <div v-if="vehiculos.length" class="results">
-      <h3>Vehículos Disponibles</h3>
-      <!-- Agrupar vehículos por categoría -->
-      <div v-if="agrupadosPorCategoria && Object.keys(agrupadosPorCategoria).length > 0">
-        <div v-for="(vehiculosCategoria, categoria) in agrupadosPorCategoria" :key="categoria" class="categoria-container">
-          <h4 class="categoria-titulo">{{ categoria }}</h4>
-          <div class="vehiculos-grid">
-            <!-- Usar el componente CardCar para cada vehículo en la categoría -->
-            <card-car v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" :vehiculo="vehiculo" />
-          </div>
+  </div>
+  <div v-if="vehiculos.length" class="results">
+  <div class="results-container">
+    <h3>Vehículos Disponibles</h3>
+    <div v-if="agrupadosPorCategoria && Object.keys(agrupadosPorCategoria).length > 0">
+      <div v-for="(vehiculosCategoria, categoria) in agrupadosPorCategoria" :key="categoria" class="categoria-container">
+        <h4 class="categoria-titulo">{{ categoria }}</h4>
+        <div class="vehiculos-grid">
+          <card-car v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" :vehiculo="vehiculo" />
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -242,17 +240,12 @@ export default {
   gap: 10px;
 }
 
-.search-form .results {
-  margin-top: 30px;
-}
-
 .search-form .categoria-container {
   margin-bottom: 30px;
 }
 
 .search-form .categoria-titulo {
   font-size: 22px;
-  font-weight: bold;
   margin-bottom: 15px;
 }
 
@@ -261,4 +254,37 @@ export default {
   gap: 10px;
   flex-wrap: wrap;
 }
+.results {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  margin-top: 30px;
+}
+
+.results-container {
+  background-color: #D3D3D3; /* Color de fondo elegante */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  width: 80%; /* Ajusta el ancho */
+  max-width: 1200px; /* Máximo ancho para pantallas grandes */
+  box-sizing: border-box;
+}
+
+.categoria-container {
+  margin-bottom: 30px;
+}
+
+.categoria-titulo {
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-align: center; /* Centrar los títulos de categoría */
+}
+
+.vehiculos-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center; /* Centrar los vehículos dentro de la grid */
+}
+
 </style>

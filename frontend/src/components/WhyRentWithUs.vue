@@ -1,44 +1,42 @@
 <template>
   <div class="why-rent">
-    <h2>¿Por qué arrendar en <span>AutoRentasChile</span>?</h2>
+    <!-- Encabezado -->
+    <h2>¿Por qué arrendar en <span class="brand-name">AutoRentasChile</span>?</h2>
+    
+    <!-- Sección de íconos y textos -->
     <div class="features">
-      <div class="feature feature-top">
-        <div class="circle">
-          <div class="icon">💰</div>
-          <p>La Mejor Tarifa</p>
-        </div>
+      <!-- La Mejor Tarifa -->
+      <div class="circle">
+        <i class="icon fa fa-money-bill-wave"></i>
+        <p>LA MEJOR TARIFA</p>
       </div>
-      <div class="feature feature-bottom">
-        <div class="circle">
-          <div class="icon">🛡️</div>
-          <p>El Mejor Servicio</p>
-        </div>
+
+      <!-- El Mejor Servicio -->
+      <div class="circle">
+        <i class="icon fa fa-shield-alt"></i>
+        <p>EL MEJOR SERVICIO</p>
       </div>
-      <div class="feature feature-top">
-        <div class="circle">
-          <div class="icon">🚗</div>
-          <p>La Mejor Flota</p>
-        </div>
+
+      <!-- La Mejor Flota -->
+      <div class="circle">
+        <i class="icon fa fa-car"></i>
+        <p>LA MEJOR FLOTA</p>
       </div>
-      <div class="feature feature-bottom">
-        <div class="circle">
-          <div class="icon">📍</div>
-          <p>Cobertura Nacional</p>
-        </div>
+
+      <!-- Cobertura Nacional -->
+      <div class="circle">
+        <i class="icon fa fa-map-marker-alt"></i>
+        <p>COBERTURA NACIONAL</p>
       </div>
-      <div class="feature feature-top">
-        <div class="circle">
-          <div class="icon">💻</div>
-          <p>Tecnología e Innovación</p>
-        </div>
+
+      <!-- Tecnología e Innovación -->
+      <div class="circle">
+        <i class="icon fa fa-laptop"></i>
+        <p>TECNOLOGÍA E INNOVACIÓN</p>
       </div>
     </div>
   </div>
 </template>
-
-  
-<script setup>
-</script>
 
 <style scoped>
 /* Estilo principal */
@@ -51,39 +49,30 @@
 
 .why-rent h2 {
   font-size: 36px;
-  color: #003366;
-  margin-bottom: 50px;
+  color: #000;
   font-weight: 700;
+  margin-bottom: 50px;
 }
 
-.why-rent h2 span {
-  color: #FF4500;
+.why-rent h2 .brand-name {
+  color: #003366;
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* Contenedor de características */
 .features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 50px;
-}
-
-
-
-.feature-top {
-  align-items: flex-start;
-}
-
-.feature-bottom {
-  align-items: flex-end;
 }
 
 /* Estilo de los círculos */
 .circle {
-  background: linear-gradient(145deg, #003366, #003366);
+  background: #003366;
+  border: 3px solid #32CD32;
   color: white;
   width: 150px;
   height: 150px;
@@ -108,10 +97,13 @@
 
 .circle p {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
+  text-transform: uppercase;
   margin: 0;
 }
+</style>
 
-  </style>
-  
+<script setup>
+  // Asegúrate de tener instalada FontAwesome para los íconos
+</script>

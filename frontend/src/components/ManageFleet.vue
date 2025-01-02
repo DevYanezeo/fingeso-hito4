@@ -308,8 +308,7 @@ h2 {
   width: 100%;
 }
 
-select,
-input {
+select,input {
   width: 100%;
   padding: 12px;
   font-size: 1rem;

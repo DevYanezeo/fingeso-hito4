@@ -29,7 +29,7 @@
   
   <style scoped>
   .carousel img {
-    width: 100%;
+    width: 99%;
     height: auto;
     border-radius: 8px;
     object-fit: cover;

@@ -1,35 +1,36 @@
 <template>
-  <div class="tarjeta">
-    <!-- Contenedor con los datos importantes del vehículo -->
-    <div class="info-vehiculo">
-      <div class="imagenes">
-        <img 
-          v-if="vehiculo.imagenUrl" 
-          :src="`/Vehiculos/${vehiculo.imagenUrl}`" 
-          alt="Imagen del vehículo" 
-          class="vehiculo-imagen" 
-        />
+  <div class="carta-vehiculo">
+    <!-- Imagen del vehículo -->
+    <div class="car-image">
+      <img 
+        v-if="vehiculo.imagenUrl" 
+        :src="`/Vehiculos/${vehiculo.imagenUrl}`" 
+        alt="Imagen del vehículo" 
+        class="vehiculo-imagen" 
+      />
+      <div class="navegacion-imagen">
+        <button @click="cambiarImagen(-1)" class="btn-navegacion">&lt;</button>
+        <button @click="cambiarImagen(1)" class="btn-navegacion">&gt;</button>
       </div>
-      <div class="nombres">
-        <p class="marca-modelo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</p>
-        <p v-if="vehiculo.descripcion" class="descripcion">{{ vehiculo.descripcion }}</p>
-      </div>
-
     </div>
 
-    <!-- Detalles adicionales del vehículo -->
-    <div class="detalles">
-      <div class="tarifa">
-        <div class="iconos">
-          <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
-          <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
-          <div><span>⛽</span> {{ vehiculo.combustible }}</div>
-          <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
+    <!-- Información textual -->
+    <div class="informacion">
+      <h2 class="titulo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
+      <div class="detalles">
+        <div class="tarifa">
+          <div class="iconos">
+            <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
+            <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
+            <div><span>⛽</span> {{ vehiculo.combustible }}</div>
+            <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
+          </div>
+          <p class="tarifa-titulo">TARIFA DIARIA</p>
+          <p class="tarifa-precio">${{ vehiculo.tarifaDiaria }}</p>
+          <button class="btn-seleccionar" @click="seleccionarVehiculo">CONTINUAR CON MI RESERVA</button>
         </div>
-        <p class="tarifa-titulo">TARIFA DIARIA</p>
-        <p class="tarifa-precio">${{ vehiculo.tarifaDiaria }}</p>
-        <button class="btn-seleccionar" @click="seleccionarVehiculo">RESERVAR</button>
-        <p class="terminos">Términos y condiciones</p>
+        <p class="texto-disponibilidad">Auto con disponibilidad limitada</p>
+        <p class="nota-impuestos">Valores incluyen IVA (impuesto)</p>
       </div>
     </div>
   </div>
@@ -37,7 +38,7 @@
 
 <script>
 export default {
-  name: "CardCar",
+  name: "CartaVehiculo",
   props: {
     vehiculo: {
       type: Object,
@@ -46,132 +47,119 @@ export default {
   },
   methods: {
     seleccionarVehiculo() {
-      // Método para manejar el clic en "Seleccionar"
+      // Lógica para seleccionar el vehículo
       this.$emit("seleccionar", this.vehiculo);
+    },
+    cambiarImagen(direccion) {
+      // Lógica para cambiar la imagen (previa o siguiente)
+      console.log(`Cambiar imagen en dirección: ${direccion}`);
     },
   },
 };
 </script>
 
 <style scoped>
-.tarjeta {
+.carta-vehiculo {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 8px;
+  overflow: hidden;
+  background-color: #003366f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 300px; /* Altura fija para todas las tarjetas */
   padding: 10px;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  gap: 40px;
-  width: 80%;
 }
 
-.info-vehiculo {
-  flex: 2;
+.car-image {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.imagenes {
+.vehiculo-imagen {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.navegacion-imagen {
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #e7e7e793;
-  padding: 20px;
-  max-width: 100px;
-  max-height: 100px;
-  border: 0.5px solid #00000019;
-  border-radius: 6px;
-
-
-}
-.imagenes img {
   width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  padding: 10px;
-  margin: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 10px;
 }
 
-.nombres {
-  text-align: center;
+.btn-navegacion {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
-.nombres .marca-modelo {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-}
-
-.detalles {
+.informacion {
   flex: 1;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  justify-content: space-between;
+  color:#ffffffe0;
+}
+
+.titulo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color:#ffffffe0;
 }
 
 .iconos {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .iconos div {
-  font-size: 16px;
-  color: #000;
-  margin-right: 16px;
-}
-
-.tarifa {
-  background-color: #e7e7e7;
-  padding: 16px;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
-  border: 0.5px solid #00000065;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .tarifa-titulo {
   font-weight: bold;
   margin: 8px 0;
-  font-size: 18px;
 }
 
 .tarifa-precio {
-  color: #e60000;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.tarifa-sin-iva {
-  font-size: 12px;
-  color: #777;
+  font-size: 1.25rem;
+  color: #003366;
+  margin: 8px 0;
 }
 
 .btn-seleccionar {
-  background-color: #e60000;
-  color: white;
+  background-color: #000000d8;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
+}
+
+.texto-disponibilidad {
+  color: #d9534f;
+  font-size: 0.875rem;
   margin-top: 16px;
 }
 
-.btn-seleccionar:hover {
-  background-color: #cc0000;
-}
-
-.terminos {
-  font-size: 12px;
-  color: #777;
+.nota-impuestos {
+  color: #6c757d;
+  font-size: 0.75rem;
   margin-top: 8px;
 }
 </style>
