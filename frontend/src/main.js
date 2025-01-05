@@ -16,6 +16,7 @@ import AdminDashboard from './components/AdminDashboard.vue';
 import AdminNavbar from './components/AdminNavbar.vue';
 import ManageFleet from './components/ManageFleet.vue';
 import Reception from './components/Reception.vue';
+import ReservationUser from './components/ReservationUser.vue';
 
 
 // Definir las rutas
@@ -86,6 +87,11 @@ const routes = [
     path: '/reception',  // Nueva ruta para Registro
     name: 'Reception',
     component: Reception,  // Componente para Registro
+  },
+  {
+    path: '/reservationUser',  // Nueva ruta para Registro
+    name: 'ReservationUser',
+    component: ReservationUser,  // Componente para Registro
   },
   
 ];

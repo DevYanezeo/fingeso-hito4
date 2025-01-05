@@ -1,6 +1,6 @@
 <template>
   <div class="search-form">
-    <h2>Arrendar Un Vehículo</h2>
+    <h2>Reservar Un Vehículo</h2>
     <form>
       <!-- Sucursal de Retiro -->
       <div class="form-group">
@@ -58,7 +58,6 @@
     <h3>Vehículos Disponibles</h3>
     <div v-if="agrupadosPorCategoria && Object.keys(agrupadosPorCategoria).length > 0">
       <div v-for="(vehiculosCategoria, categoria) in agrupadosPorCategoria" :key="categoria" class="categoria-container">
-        <h4 class="categoria-titulo">{{ categoria }}</h4>
         <div class="vehiculos-grid">
           <card-car v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" :vehiculo="vehiculo" />
         </div>
@@ -177,8 +176,9 @@ export default {
 .search-form form {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;  /* Permite que los elementos se acomoden mejor */
-  gap: 20px;
+  flex-wrap: wrap;  
+  justify-content: space-around;
+
 }
 
 .search-form .form-group {
@@ -217,7 +217,7 @@ export default {
 .search-form button {
   background-color: #FF4500;
   color: white;
-  padding: 10px 50px;  /* Aumenta el padding horizontal para hacerlo más largo */
+  padding: 10px 60px;  /* Aumenta el padding horizontal para hacerlo más largo */
   border: none;
   border-radius: 8px;  /* Elimina los bordes redondeados */
   cursor: pointer;
@@ -225,6 +225,11 @@ export default {
   transition: background-color 0.3s ease, transform 0.3s ease;
 } 
 
+.form-button {
+  display: flex;
+  height: 40px;
+  margin-top: 40px; /* Ajusta el valor según lo necesario */
+}
 
 .search-form button:hover {
   background-color: #00796b;
@@ -240,20 +245,17 @@ export default {
   gap: 10px;
 }
 
-.search-form .categoria-container {
-  margin-bottom: 30px;
-}
-
-.search-form .categoria-titulo {
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
 .search-form .vehiculos-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
-  flex-wrap: wrap;
+  justify-items: center;
 }
+
+.search-form .vehiculos-grid .card-car {
+  margin-top: 10px; /* Añadir un poco de espacio entre el título y la tarjeta */
+}
+
 .results {
   display: flex;
   justify-content: center; /* Centra horizontalmente el contenido */
@@ -261,23 +263,19 @@ export default {
 }
 
 .results-container {
-  background-color: #D3D3D3; /* Color de fondo elegante */
+  background-image: url('/fondo.png'); /* Color de fondo elegante */
   padding: 20px; /* Espaciado interno */
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-  width: 80%; /* Ajusta el ancho */
-  max-width: 1200px; /* Máximo ancho para pantallas grandes */
+  max-width: 100%; /* Máximo ancho para pantallas grandes */
   box-sizing: border-box;
 }
 
 .categoria-container {
+  display: flex;
+  flex-direction: column; /* Apilar los elementos en columna */
+  align-items: center; /* Centrar horizontalmente */
   margin-bottom: 30px;
-}
-
-.categoria-titulo {
-  font-size: 18px;
-  margin-bottom: 15px;
-  text-align: center; /* Centrar los títulos de categoría */
 }
 
 .vehiculos-grid {

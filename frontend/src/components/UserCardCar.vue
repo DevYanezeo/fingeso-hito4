@@ -16,6 +16,7 @@
 
     <!-- Información textual -->
     <div class="informacion">
+      <h3 class="categoria">{{ vehiculo.categoria }}</h3>
       <h2 class="titulo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
       <div class="detalles">
         <div class="tarifa">
@@ -68,7 +69,7 @@ export default {
   background-color: #003366f4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 300px; /* Altura fija para todas las tarjetas */
-  padding: 10px;
+  padding: 15px;
 }
 
 .car-image {
