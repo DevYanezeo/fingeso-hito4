@@ -1,8 +1,8 @@
 package autorentaschile.backend.Repositorios;
 
-import autorentaschile.backend.Entidades.Reporte;
+import autorentaschile.backend.Entidades.Reserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface ReservaRepositorio extends JpaRepository<Reporte, Long> {
+public interface ReservaRepositorio extends JpaRepository<Reserva, Long> {
 }
