@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "usuario")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,33 +21,26 @@ public class Usuario {
 	private String celularUsuario;         // Teléfono celular
 	private String passwordUsuario;        // Contraseña
 	private String direccionUsuario;       // Dirección del usuario
-	private String sucursalDeTrabajo;      // Sucursal de trabajo (si aplica)
-	private String rolEmpleado;            // Rol del empleado (puede ser cliente, admin, etc.)
-	private String tipoUsuario;            // Tipo de usuario (admin, cliente, arrendador, etc.)
+	@JoinColumn(name = "id_rol")
+	private Long idRol;
 	private String fechaNacimiento;        // Fecha de nacimiento del usuario
 
 	// Constructor
-	public Usuario(String rutUsuario, String nombreUsuario, String email, String celularUsuario,
-				   String passwordUsuario, String direccionUsuario, String sucursalDeTrabajo,
-				   String rolEmpleado, String tipoUsuario, String fechaNacimiento) {
+
+
+	public Usuario(String rutUsuario, String nombreUsuario, String email, String celularUsuario, String passwordUsuario, String direccionUsuario,
+				   Long rolUsuario, String fechaNacimiento) {
 		this.rutUsuario = rutUsuario;
 		this.nombreUsuario = nombreUsuario;
 		this.email = email;
 		this.celularUsuario = celularUsuario;
 		this.passwordUsuario = passwordUsuario;
 		this.direccionUsuario = direccionUsuario;
-		this.sucursalDeTrabajo = sucursalDeTrabajo;
-		this.rolEmpleado = rolEmpleado;
-		this.tipoUsuario = tipoUsuario;
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getRutUsuario() {
-		return rutUsuario;
-	}
+	public Usuario() {
 
-	public void setRutUsuario(String rutUsuario) {
-		this.rutUsuario = rutUsuario;
 	}
 
 	public long getId() {
@@ -59,6 +49,14 @@ public class Usuario {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getRutUsuario() {
+		return rutUsuario;
+	}
+
+	public void setRutUsuario(String rutUsuario) {
+		this.rutUsuario = rutUsuario;
 	}
 
 	public String getNombreUsuario() {
@@ -101,20 +99,12 @@ public class Usuario {
 		this.direccionUsuario = direccionUsuario;
 	}
 
-	public String getSucursalDeTrabajo() {
-		return sucursalDeTrabajo;
+	public Long getIdRolUsuario() {
+		return idRol;
 	}
 
-	public void setSucursalDeTrabajo(String sucursalDeTrabajo) {
-		this.sucursalDeTrabajo = sucursalDeTrabajo;
-	}
-
-	public String getRolEmpleado() {
-		return rolEmpleado;
-	}
-
-	public void setRolEmpleado(String rolEmpleado) {
-		this.rolEmpleado = rolEmpleado;
+	public void setIdRolUsuario(String rolUsuario) {
+		this.idRol = idRol;
 	}
 
 	public String getFechaNacimiento() {
@@ -123,14 +113,6 @@ public class Usuario {
 
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public String getTipoUsuario() {
-		return tipoUsuario;
-	}
-
-	public void setTipoUsuario(String tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
 	}
 }
 

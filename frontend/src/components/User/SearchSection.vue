@@ -263,7 +263,7 @@ export default {
 }
 
 .results-container {
-  background-image: url('/fondo.png'); /* Color de fondo elegante */
+  background-image: url('/fondo.png'); 
   padding: 20px; /* Espaciado interno */
   border-radius: 10px; /* Bordes redondeados */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
@@ -283,6 +283,43 @@ export default {
   gap: 40px;
   flex-wrap: wrap;
   justify-content: center; /* Centrar los vehículos dentro de la grid */
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .search-form form {
+    flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+    align-items: center;    /* Centra el contenido */
+  }
+
+  .search-form .form-group {
+    width: 90%; /* Ocupa casi todo el ancho disponible */
+  }
+
+  .form-button {
+    margin-top: 20px; /* Reduce el margen superior */
+    justify-content: center; /* Centra el botón */
+  }
+
+  .vehiculos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ajusta las columnas para dispositivos pequeños */
+    gap: 15px; /* Reduce el espacio entre los elementos */
+  }
+}
+
+@media (max-width: 480px) {
+  .search-form h2 {
+    font-size: 20px; /* Reduce el tamaño del título */
+  }
+
+  .search-form input, .search-form select {
+    padding: 10px; /* Reduce el padding de los inputs */
+  }
+
+  .search-form button {
+    padding: 8px 40px; /* Ajusta el tamaño del botón */
+    font-size: 14px; /* Reduce el tamaño del texto */
+  }
 }
 
 </style>

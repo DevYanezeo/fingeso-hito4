@@ -17,7 +17,7 @@
           <router-link to="/profile" class="nav-link">Mi Perfil</router-link>
         </div>
         <div class="nav-link-container">
-          <router-link to="/flota" class="nav-link">Mis reservas</router-link>
+          <router-link to="/UserReservations" class="nav-link">Mis reservas</router-link>
         </div>
         <div class="nav-link-container">
           <router-link to="/sucursales" class="nav-link">Sucursales</router-link>

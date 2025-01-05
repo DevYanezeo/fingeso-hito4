@@ -3,20 +3,20 @@ import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 // Importar los componentes
-import Fleet from './components/Fleet.vue';
-import Home from './components/Home.vue';  // Página de inicio
-import OurBranches from './components/OurBranches.vue'; // Componente de sucursales
-import Login from './components/Login.vue'; // Componente de login
-import Register from './components/register.vue'; // Componente de registro
-import Contact from './components/contact.vue';
-import WorkWithUs from './components/workWithUs.vue';
-import UserLogged from './components/UserLogged.vue';
-import Profile from './components/UserProfile.vue';
-import AdminDashboard from './components/AdminDashboard.vue';
-import AdminNavbar from './components/AdminNavbar.vue';
-import ManageFleet from './components/ManageFleet.vue';
-import Reception from './components/Reception.vue';
-import ReservationUser from './components/ReservationUser.vue';
+import Fleet from './components/Pages/Fleet.vue';
+import Home from './components/Pages/Home.vue';  // Página de inicio
+import OurBranches from './components/Pages/OurBranches.vue'; // Componente de sucursales
+import Login from './components/Auth/Login.vue'; // Componente de login
+import Register from './components/Auth/register.vue'; // Componente de registro
+import Contact from './components/Layout/contact.vue';
+import WorkWithUs from './components/Pages/workWithUs.vue';
+import UserLogged from './components/User/UserLogged.vue';
+import Profile from './components/User/UserProfile.vue';
+import AdminDashboard from './components/Admin/AdminDashboard.vue';
+import AdminNavbar from './components/Layout/AdminNavbar.vue';
+import ManageFleet from './components/Admin/ManageFleet.vue';
+import Reception from './components/Admin/Reception.vue';
+import UserReservations from './components/User/UserReservations.vue';
 
 
 // Definir las rutas
@@ -89,9 +89,9 @@ const routes = [
     component: Reception,  // Componente para Registro
   },
   {
-    path: '/reservationUser',  // Nueva ruta para Registro
-    name: 'ReservationUser',
-    component: ReservationUser,  // Componente para Registro
+    path: '/userReservations',  // Nueva ruta para Registro
+    name: 'UserReservations',
+    component: UserReservations,  // Componente para Registro
   },
   
 ];

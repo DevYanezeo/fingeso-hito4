@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import axios from 'axios'; // Asegúrate de tener axios importado
+
 export default {
   name: 'Login',
   data() {
@@ -52,38 +54,37 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      // Definir las credenciales válidas
-      const validEmailAdmin = 'admin@autorentas.cl';
-      const validPasswordAdmin = 'admin';
+    async submitForm() {
+      try {
+        // Enviar los datos de login al backend
+        const response = await axios.post("http://localhost:8080/api/usuarios/login", {
+          email: this.email,
+          password: this.password
+        });
 
-      const validEmailCliente = 'usuario@dominio.com'; // Ejemplo de cliente
-      const validPasswordCliente = '12345'; // Ejemplo de cliente
+        // Si la respuesta es exitosa (login exitoso)
+        if (response.status === 200) {
+          // Guardar el token y el correo en localStorage
+          localStorage.setItem('authToken', 'token-de-autenticacion'); // Cambiar con el token real si lo envía el backend
+          localStorage.setItem('userEmail', this.email); // Guardar el correo en localStorage
 
-      // Simular autenticación
-      if (this.email === validEmailAdmin && this.password === validPasswordAdmin) {
-        // Si las credenciales son correctas, guardamos el token y el correo
-        localStorage.setItem('authToken', 'token-de-autenticacion');
-        localStorage.setItem('userEmail', this.email); // Guardar el correo en localStorage
-        localStorage.setItem('userRole', 'admin'); // Guardar el rol de administrador
-
-        // Redirigir al usuario al Admin Dashboard
-        this.$router.push('/AdminDashboard');
-      } else if (this.email === validEmailCliente && this.password === validPasswordCliente) {
-        // Si las credenciales son correctas para un cliente, guardamos el token y el correo
-        localStorage.setItem('authToken', 'token-de-autenticacion');
-        localStorage.setItem('userEmail', this.email); // Guardar el correo en localStorage
-        localStorage.setItem('userRole', 'cliente'); // Guardar el rol de cliente
-
-        // Redirigir al usuario a la página UserLogged
-        this.$router.push('/UserLogged');
-      } else {
-        alert('Correo o contraseña incorrectos.');
+          // Redirigir al usuario al Dashboard dependiendo de su rol (si el backend envía el rol)
+          const userRole = response.data.role; // Suponiendo que el backend devuelve el rol en la respuesta
+          if (userRole === 'admin') {
+            this.$router.push('/AdminDashboard');
+          } else if (userRole === 'cliente') {
+            this.$router.push('/UserLogged');
+          }
+        }
+      } catch (error) {
+        // Si ocurre un error, mostramos un mensaje
+        alert('Error en login: ' + (error.response ? error.response.data : 'Credenciales incorrectas.'));
       }
     }
   }
 };
 </script>
+
 
 
 <style scoped>

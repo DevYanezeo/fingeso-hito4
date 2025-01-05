@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import GeneralNavbar from './components/GuessNavbar.vue';
-import Footer from './components/GeneralFooter.vue';
-import UserLoggedNavbar from './components/UserLoggedNavbar.vue';
-import AdminNavbar from './components/AdminNavbar.vue';
+import GeneralNavbar from './components/Layout/GuessNavbar.vue';
+import Footer from './components/Layout/GeneralFooter.vue';
+import UserLoggedNavbar from './components/Layout/UserLoggedNavbar.vue';
+import AdminNavbar from './components/Layout/AdminNavbar.vue';
 
 export default {
   name: 'App',

@@ -12,7 +12,7 @@
         <ul>
           <li><router-link to="/">Rent a Car</router-link></li>
           <li><router-link to="/login">Anular / Modificar reserva</router-link></li>
-          <li><router-link to="/reporte-siniestros">Reporte de siniestros</router-link></li>
+          <li><router-link to="/">Reporte de siniestros</router-link></li>
         </ul>
       </div>
 
@@ -20,8 +20,8 @@
       <div class="footer-column">
         <h4>CONTÁCTANOS</h4>
         <ul>
-          <li><router-link to="/sucursales">Sucursales</router-link></li>
-          <li><router-link to="/contact">Contacto</router-link></li>
+          <li><router-link to="../Pages/OurBranches">Sucursales</router-link></li>
+          <li>Contacto +562 22998875</li>
         </ul>
       </div>
 

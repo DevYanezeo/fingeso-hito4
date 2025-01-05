@@ -41,7 +41,7 @@
 </template>
   
   <script>
-  import SearchSection from './SearchSection.vue';
+  import SearchSection from '../User/SearchSection.vue';
   
   export default {
     name: 'Flota',

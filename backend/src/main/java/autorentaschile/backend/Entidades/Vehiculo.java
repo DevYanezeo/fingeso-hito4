@@ -21,7 +21,7 @@ public class Vehiculo {
 	private String marca;
 	private String modelo;
 	private String categoria;
-	private String estado; // Disponible - Reservado - Taller
+	private String estado; // Disponible - Reservado - Fuera de servicio (Manenimiento o reparacion) - Inactivo
 	private int pasajeros;
 	private int puertas;
 	private int tarifaDiaria;

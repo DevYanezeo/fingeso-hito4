@@ -5,6 +5,8 @@ import autorentaschile.backend.Servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/usuarios")
 @CrossOrigin(origins = "*")
@@ -15,7 +17,7 @@ public class UsuarioControlador {
 
 	// Endpoint para registrar un nuevo usuario
 	@PostMapping("/registrar")
-	public Usuario registerUser(@RequestBody Usuario usuario) {
+	public Map<String, String> registerUser(@RequestBody Usuario usuario) {
 		return usuarioServicio.register(
 				usuario.getRutUsuario(),
 				usuario.getNombreUsuario(),
@@ -23,10 +25,13 @@ public class UsuarioControlador {
 				usuario.getCelularUsuario(),
 				usuario.getPasswordUsuario(),
 				usuario.getDireccionUsuario(),
-				usuario.getSucursalDeTrabajo(),
-				usuario.getRolEmpleado(),
-				usuario.getTipoUsuario(),
 				usuario.getFechaNacimiento()
 		);
 	}
+	// Endpoint para loggear un usuario
+	@PostMapping("/login")
+	public boolean login(@RequestBody Usuario usuario) {
+		return usuarioServicio.login(usuario.getNombreUsuario(), usuario.getPasswordUsuario());
+	}
+
 }

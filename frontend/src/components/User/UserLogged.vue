@@ -1,6 +1,5 @@
 <template>
-    <div class="home">
-      <!-- Puedes añadir más contenido aquí -->
+    <div class="UserLogged">
       <section class="search">
         <SearchSection />
       </section>
@@ -12,14 +11,14 @@
       </section>
     </div>
 </template>
-  
+
 <script>
 import SearchSection from './SearchSection.vue';
-import ImageCarousel from './ImageCarousel.vue';
-import WhyRentWithUs from './WhyRentWithUs.vue';
+import ImageCarousel from '../Layout/ImageCarousel.vue';
+import WhyRentWithUs from '../Pages/WhyRentWithUs.vue';
   
 export default {
-    name: 'Home',
+    name: 'logged',
     components: {
       SearchSection,
       ImageCarousel,
@@ -27,9 +26,9 @@ export default {
   }
 };
 </script>
-  
+
 <style scoped>
-.home {
+.UserLogged {
   text-align: center;
   margin-top: 50px;
   font-size: 18px;
@@ -47,4 +46,3 @@ export default {
   margin-top: 30px;
   }
  </style>
-  

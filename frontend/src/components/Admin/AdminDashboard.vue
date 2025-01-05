@@ -53,7 +53,7 @@
 </template>
  
 <script>
-import AdminNavbar from './AdminNavbar.vue';
+import AdminNavbar from '../Layout/AdminNavbar.vue';
 
 export default {
   name: 'AdminDashboard',
