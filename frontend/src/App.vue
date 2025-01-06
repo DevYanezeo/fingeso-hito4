@@ -34,13 +34,14 @@ export default {
       return !!localStorage.getItem('authToken');
     },
     isAdmin() {
-      // Verifica si el correo es el del admin y si el token está presente
-      const userEmail = localStorage.getItem('userEmail');
-      return userEmail === 'admin@autorentas.cl' && this.isLoggedIn;
+      // Verifica si el rol es admin
+      const userRole = localStorage.getItem('userRole');
+      return userRole === '2'; // Si el rol es 2, es admin
     }
   }
 };
 </script>
+
 
 <style>
 body {

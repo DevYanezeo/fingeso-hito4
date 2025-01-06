@@ -31,7 +31,6 @@ public class UsuarioControlador {
 	// Endpoint para loggear un usuario
 	@PostMapping("/login")
 	public boolean login(@RequestBody Usuario usuario) {
-		return usuarioServicio.login(usuario.getNombreUsuario(), usuario.getPasswordUsuario());
+		return usuarioServicio.login(usuario.getEmail(), usuario.getPasswordUsuario());
 	}
-
 }

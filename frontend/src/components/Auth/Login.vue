@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import axios from 'axios'; // Asegúrate de tener axios importado
+import axios from 'axios';
 
 export default {
   name: 'Login',
@@ -56,36 +56,34 @@ export default {
   methods: {
     async submitForm() {
       try {
-        // Enviar los datos de login al backend
-        const response = await axios.post("http://localhost:8080/api/usuarios/login", {
+        const response = await axios.post('http://localhost:8080/api/usuarios/login', {
           email: this.email,
-          password: this.password
+          passwordUsuario: this.password
         });
 
-        // Si la respuesta es exitosa (login exitoso)
-        if (response.status === 200) {
-          // Guardar el token y el correo en localStorage
-          localStorage.setItem('authToken', 'token-de-autenticacion'); // Cambiar con el token real si lo envía el backend
-          localStorage.setItem('userEmail', this.email); // Guardar el correo en localStorage
+        if (response.data) {
+          // Guardamos el correo y el rol en el localStorage
+          localStorage.setItem('userEmail', this.email);
+          localStorage.setItem('authToken', 'your-token'); // Puedes poner tu token si tienes uno
 
-          // Redirigir al usuario al Dashboard dependiendo de su rol (si el backend envía el rol)
-          const userRole = response.data.role; // Suponiendo que el backend devuelve el rol en la respuesta
-          if (userRole === 'admin') {
-            this.$router.push('/AdminDashboard');
-          } else if (userRole === 'cliente') {
-            this.$router.push('/UserLogged');
-          }
+          // Si es cliente o admin, lo guardamos también
+          const role = response.data.role; // Aquí es donde esperas el rol desde el backend
+          localStorage.setItem('userRole', role);
+
+          // Redirigir al home
+          this.$router.push('/'); // Redirigir al home
+
+        } else {
+          alert('Credenciales inválidas. Por favor, revisa tu correo y contraseña.');
         }
       } catch (error) {
-        // Si ocurre un error, mostramos un mensaje
-        alert('Error en login: ' + (error.response ? error.response.data : 'Credenciales incorrectas.'));
+        alert('Hubo un error en el proceso de inicio de sesión. Por favor, intenta de nuevo.');
+        console.error(error);
       }
     }
   }
 };
 </script>
-
-
 
 <style scoped>
 /* Contenedor principal */

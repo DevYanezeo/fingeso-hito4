@@ -37,7 +37,19 @@ public class UsuarioServicio {
 		response.put("message", "Usuario registrado exitosamente.");
 		return response;
 	}
-	// Métodos adicionales (login, etc.) permanecen iguales
+	// Validacion de rol cliente
+	public boolean isClient(long id) {
+		Usuario user = usuarioRepositorio.findById(id);
+		return user != null && user.getIdRol() == 1L;
+	}
+
+	// Validacion de rol Admin
+	public boolean isAdmin(long id) {
+		Usuario user = usuarioRepositorio.findById(id);
+		return user != null && user.getIdRol() == 2L;
+	}
+
+	// Metodo Inicio de Sesion
 	public boolean login(String email, String passwordUsuario){
 		Usuario usuario = usuarioRepositorio.findByEmail(email);
 		if(usuario != null) {
@@ -47,13 +59,5 @@ public class UsuarioServicio {
 		}
 		return false;
 	}
-	public boolean isClient(long id) {
-		Usuario user = usuarioRepositorio.findById(id);
-		return user != null && user.getIdRol() == 1L;
-	}
 
-	public boolean isAdmin(long id) {
-		Usuario user = usuarioRepositorio.findById(id);
-		return user != null && user.getIdRol() == 2L;
-	}
 }
