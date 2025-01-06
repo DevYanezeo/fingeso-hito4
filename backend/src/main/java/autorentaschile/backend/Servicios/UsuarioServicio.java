@@ -48,12 +48,12 @@ public class UsuarioServicio {
 		return false;
 	}
 	public boolean isClient(long id) {
-		Usuario user = usuarioRepositorio.findByIdUsuario(id);
+		Usuario user = usuarioRepositorio.findById(id);
 		return user != null && user.getIdRol() == 1L;
 	}
 
 	public boolean isAdmin(long id) {
-		Usuario user = usuarioRepositorio.findByIdUsuario(id);
+		Usuario user = usuarioRepositorio.findById(id);
 		return user != null && user.getIdRol() == 2L;
 	}
 }
