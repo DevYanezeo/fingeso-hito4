@@ -99,11 +99,11 @@ public class Usuario {
 		this.direccionUsuario = direccionUsuario;
 	}
 
-	public Long getIdRolUsuario() {
+	public Long getIdRol() {
 		return idRol;
 	}
 
-	public void setIdRolUsuario(String rolUsuario) {
+	public void setIdRol(String rolUsuario) {
 		this.idRol = idRol;
 	}
 
