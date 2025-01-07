@@ -2,35 +2,40 @@
   <div class="carta-vehiculo">
     <!-- Imagen del vehículo -->
     <div class="car-image">
-      <img 
-        v-if="vehiculo.imagenUrl" 
-        :src="`/Vehiculos/${vehiculo.imagenUrl}`" 
-        alt="Imagen del vehículo" 
-        class="vehiculo-imagen" 
+      <img
+        v-if="vehiculo.imagenUrl"
+        :src="`/Vehiculos/${vehiculo.imagenUrl}`"
+        alt="Imagen del vehículo"
+        class="vehiculo-imagen"
       />
       <div class="navegacion-imagen">
-        <button @click="cambiarImagen(-1)" class="btn-navegacion">&lt;</button>
-        <button @click="cambiarImagen(1)" class="btn-navegacion">&gt;</button>
+        <button @click="cambiarImagen(-1)" class="btn-navegacion">←</button>
+        <button @click="cambiarImagen(1)" class="btn-navegacion">→</button>
       </div>
     </div>
 
     <!-- Información textual -->
     <div class="informacion">
-      <h3 class="categoria">{{ vehiculo.categoria }}</h3>
+      <p class="categoria">{{ vehiculo.categoria }}</p>
       <h2 class="titulo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
       <div class="detalles">
-        <div class="tarifa">
-          <div class="iconos">
-            <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
-            <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
-            <div><span>⛽</span> {{ vehiculo.combustible }}</div>
-            <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
-          </div>
-          <p class="tarifa-titulo">TARIFA DIARIA</p>
-          <p class="tarifa-precio">${{ vehiculo.tarifaDiaria }}</p>
-          <button class="btn-seleccionar" @click="seleccionarVehiculo">CONTINUAR CON MI RESERVA</button>
+        <div class="iconos">
+          <div><span>🧑‍🤝‍🧑</span> {{ vehiculo.pasajeros }} Pasajeros</div>
+          <div><span>🚘</span> {{ vehiculo.puertas }} Puertas</div>
+          <div><span>🛢️</span> {{ vehiculo.combustible }}</div>
+          <div><span>🔄</span> {{ vehiculo.transmision }}</div>
         </div>
-        <p class="texto-disponibilidad">Auto con disponibilidad limitada</p>
+        <div class="tarifa">
+          <p class="tarifa-titulo">TARIFA DIARIA</p>
+          <p class="tarifa-precio">💲{{ vehiculo.tarifaDiaria }}</p>
+        </div>
+        <!-- Aquí hemos reemplazado el botón por el router-link -->
+        <router-link to="/login" class="btn-seleccionar">
+          CONTINUAR CON MI RESERVA →
+        </router-link>
+        <div class="disponibilidad">
+          ⚠️ Auto con disponibilidad limitada
+        </div>
         <p class="nota-impuestos">Valores incluyen IVA (impuesto)</p>
       </div>
     </div>
@@ -48,11 +53,9 @@ export default {
   },
   methods: {
     seleccionarVehiculo() {
-      // Lógica para seleccionar el vehículo
       this.$emit("seleccionar", this.vehiculo);
     },
     cambiarImagen(direccion) {
-      // Lógica para cambiar la imagen (previa o siguiente)
       console.log(`Cambiar imagen en dirección: ${direccion}`);
     },
   },
@@ -63,104 +66,127 @@ export default {
 .carta-vehiculo {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #003366, #000000);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  background-color: #003366f4;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 300px; /* Altura fija para todas las tarjetas */
-  padding: 15px;
+  padding: 20px;
+  color: #ffffff;
+
 }
 
 .car-image {
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
 }
 
 .vehiculo-imagen {
   max-width: 100%;
-  height: auto;
-  border-radius: 4px;
+  border-radius: 12px;
 }
 
 .navegacion-imagen {
   position: absolute;
+  top: 50%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  top: 50%;
   transform: translateY(-50%);
-  padding: 0 10px;
 }
 
 .btn-navegacion {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 39, 77, 0.8);
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn-navegacion:hover {
+  transform: scale(1.1);
 }
 
 .informacion {
-  flex: 1;
-  padding: 16px;
+  width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color:#ffffffe0;
+}
+
+.categoria {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ffcc00;
 }
 
 .titulo {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 16px;
-  color:#ffffffe0;
 }
 
 .iconos {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin: 16px 0;
 }
 
 .iconos div {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 1.2rem;
+}
+
+.tarifa {
+  text-align: center;
 }
 
 .tarifa-titulo {
   font-weight: bold;
-  margin: 8px 0;
 }
 
 .tarifa-precio {
-  font-size: 1.25rem;
-  color: #003366;
-  margin: 8px 0;
+  font-size: 1.5rem;
+  color: #ffcc00;
+  margin: 15px;
 }
 
 .btn-seleccionar {
-  background-color: #000000d8;
-  color: #fff;
+  background-color: #FF4500;
+  color: #000000;
   border: none;
+  border-radius: 8px;
   padding: 12px;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
 }
 
-.texto-disponibilidad {
-  color: #d9534f;
-  font-size: 0.875rem;
-  margin-top: 16px;
+.btn-seleccionar:hover {
+  background-color: #cca300;
+}
+
+.disponibilidad {
+  color: #d21009;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 12px;
 }
 
 .nota-impuestos {
-  color: #6c757d;
   font-size: 0.75rem;
-  margin-top: 8px;
+  color: #cccccc;
+  text-align: center;
 }
 </style>

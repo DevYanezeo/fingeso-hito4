@@ -30,8 +30,8 @@
         <label for="vehicle-type">Tipo de Vehículo</label>
         <select id="vehicle-type" v-model="selectedVehicleType">
           <option value="" disabled>Seleccione un tipo</option>
-          <option v-for="tipo in tiposVehiculo" :key="tipo" :value="tipo">
-            {{ tipo }}
+          <option v-for="vehiculo in vehiculos" :key="vehiculo.id" :value="vehiculo.id">
+            {{ vehiculo.categoria }}
           </option>
         </select>
       </div>
@@ -62,7 +62,7 @@
           <card-car v-for="vehiculo in vehiculosCategoria" :key="vehiculo.id" :vehiculo="vehiculo" />
         </div>
       </div>
-    </div>
+    </div>  
   </div>
 </div>
 </template>
@@ -83,7 +83,6 @@ export default {
       pickupDate: '', // Fecha de retiro
       returnDate: '', // Fecha de devolución
       selectedVehicleType: '', // Tipo de vehículo seleccionado
-      tiposVehiculo: [], // Lista de tipos de vehículos
       vehiculos: [], // Lista de vehículos encontrados
       agrupadosPorCategoria: {}, // Vehículos agrupados por categoría
     };
@@ -103,9 +102,9 @@ export default {
     // Función para cargar los tipos de vehículos
     async cargarCategorias() {
       try {
-        const response = await fetch('http://localhost:8080/api/vehiculo/tipos');
+        const response = await fetch('http://localhost:8080/api/vehiculo');
         const data = await response.json();
-        this.tiposVehiculo = data;
+        this.vehiculos = data;
       } catch (error) {
         console.error('Error al cargar las categorías:', error);
       }

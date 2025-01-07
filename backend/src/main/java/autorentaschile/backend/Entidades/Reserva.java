@@ -11,46 +11,37 @@ public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long idReserva;
+    private long idReserva;
     private String rutUsuario;                  // RUT del usuario que realiza la reserva
     private int idSucursalRetiro;                // ID de la sucursal donde se retira el vehículo
-    private Date fechaRetiro;                    // Fecha de retiro del vehículo
-    private Date fechaDevolucion;                // Fecha de devolución del vehículo
+    private String fechaRetiro;                    // Fecha de retiro del vehículo
+    private String fechaDevolucion;                // Fecha de devolución del vehículo
     private int idSucursalDevolucion;            // ID de la sucursal donde se devuelve el vehículo
-    private String categoriaVehiculo;            // Categoría del vehículo (ej. SUV, sedán, etc.)
-    private String patenteVehiculoAsignado;      // Patente del vehículo asignado
+    private String patenteVehiculo;      // Patente del vehículo asignado
     private String estadoReserva;                       // Estado de la reserva (pendiente, entregado, finalizado)
-    private Date fechaCreacion;
-    @ManyToOne
-    @JoinColumn(name = "idBoleta")
-    private Boleta idBoleta;                        // ID de la boleta asociada a la reserva
 
 
     // Constructor
-    public Reserva(String rutUsuario, int idSucursalRetiro, Date fechaRetiro, Date fechaDevolucion,
-                   int idSucursalDevolucion, String categoriaVehiculo, String patenteVehiculoAsignado,
-                   String estadoReserva, Date fechaCreacion, Boleta idBoleta) {
-        this.rutUsuario = rutUsuario;
-        this.idSucursalRetiro = idSucursalRetiro;
-        this.fechaRetiro = fechaRetiro;
-        this.fechaDevolucion = fechaDevolucion;
-        this.idSucursalDevolucion = idSucursalDevolucion;
-        this.categoriaVehiculo = categoriaVehiculo;
-        this.patenteVehiculoAsignado = patenteVehiculoAsignado;
-        this.estadoReserva = estadoReserva;
-        this.fechaCreacion = fechaCreacion;
-        this.idBoleta = idBoleta;
-    }
 
     public Reserva() {
 
     }
 
-    public Long getIdReserva() {
+    public Reserva(String rutUsuario, int idSucursalRetiro, String fechaRetiro, String fechaDevolucion, int idSucursalDevolucion, String patenteVehiculo, String estadoReserva) {
+        this.rutUsuario = rutUsuario;
+        this.idSucursalRetiro = idSucursalRetiro;
+        this.fechaRetiro = fechaRetiro;
+        this.fechaDevolucion = fechaDevolucion;
+        this.idSucursalDevolucion = idSucursalDevolucion;
+        this.patenteVehiculo = patenteVehiculo;
+        this.estadoReserva = estadoReserva;
+    }
+
+    public long getIdReserva() {
         return idReserva;
     }
 
-    public void setIdReserva(Long idReserva) {
+    public void setIdReserva(long idReserva) {
         this.idReserva = idReserva;
     }
 
@@ -70,19 +61,19 @@ public class Reserva {
         this.idSucursalRetiro = idSucursalRetiro;
     }
 
-    public Date getFechaRetiro() {
+    public String getFechaRetiro() {
         return fechaRetiro;
     }
 
-    public void setFechaRetiro(Date fechaRetiro) {
+    public void setFechaRetiro(String fechaRetiro) {
         this.fechaRetiro = fechaRetiro;
     }
 
-    public Date getFechaDevolucion() {
+    public String getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(Date fechaDevolucion) {
+    public void setFechaDevolucion(String fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 
@@ -94,20 +85,12 @@ public class Reserva {
         this.idSucursalDevolucion = idSucursalDevolucion;
     }
 
-    public String getCategoriaVehiculo() {
-        return categoriaVehiculo;
+    public String getPatenteVehiculo() {
+        return patenteVehiculo;
     }
 
-    public void setCategoriaVehiculo(String categoriaVehiculo) {
-        this.categoriaVehiculo = categoriaVehiculo;
-    }
-
-    public String getPatenteVehiculoAsignado() {
-        return patenteVehiculoAsignado;
-    }
-
-    public void setPatenteVehiculoAsignado(String patenteVehiculoAsignado) {
-        this.patenteVehiculoAsignado = patenteVehiculoAsignado;
+    public void setPatenteVehiculo(String patenteVehiculo) {
+        this.patenteVehiculo = patenteVehiculo;
     }
 
     public String getEstadoReserva() {
@@ -116,21 +99,5 @@ public class Reserva {
 
     public void setEstadoReserva(String estadoReserva) {
         this.estadoReserva = estadoReserva;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-    public Boleta getIdBoleta() {
-        return idBoleta;
-    }
-
-    public void setIdBoleta(Boleta idBoleta) {
-        this.idBoleta = idBoleta;
     }
 }

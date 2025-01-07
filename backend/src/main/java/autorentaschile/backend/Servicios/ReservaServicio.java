@@ -24,30 +24,14 @@ public class ReservaServicio {
 	// Salida: Una reserva en la base
 	public Reserva crearReserva(String rutUsuario,
 								int idSucursalRetiro,
-								Date fechaRetiro,
-								Date fechaDevolucion,
+								String fechaRetiro,
+								String fechaDevolucion,
 								int idSucursalDevolucion,
-								String categoriaVehiculo,
-								String patenteVehiculoAsignado,
-								String estadoReserva,
-								Date fechaCreacion,
-								Boleta idBoleta) {
+								String patenteVehiculo,
+								String estadoReserva) {
 		// Ocupar el constructor de la entidad con todos los datos introducidos
-		Reserva reserva = new Reserva(rutUsuario, idSucursalRetiro, fechaRetiro, fechaDevolucion, idSucursalDevolucion, categoriaVehiculo, patenteVehiculoAsignado, estadoReserva, fechaCreacion, idBoleta);
+		Reserva reserva = new Reserva(rutUsuario, idSucursalRetiro, fechaRetiro, fechaDevolucion, idSucursalDevolucion, patenteVehiculo, estadoReserva);
 
-		// Verificar que el vehiculo introducido sea unico
-		Optional<Vehiculo> existenteVehiculoOptional = vehiculoRepositorio.findByPatente(patenteVehiculoAsignado);
-		if (existenteVehiculoOptional.isEmpty()) {
-			return null;
-		}
-
-		// Verificar que el vehiculo introducido este disponible
-		Vehiculo vehiculo = existenteVehiculoOptional.get();
-		if (!vehiculo.getEstado().equals("Disponible")) {
-			return null;
-		}
-		// Cambiar el estado a Reservado
-		vehiculo.setEstado("Reservado");
 
 		// Verificar que la reserva sea unica en ID
 		Optional<Reserva> existenteReservaOptional = reservaRepositorio.findById(reserva.getIdReserva());
@@ -65,14 +49,11 @@ public class ReservaServicio {
 	public Reserva modificarReserva(Long id,
 									String rutUsuario,
 									int idSucursalRetiro,
-									Date fechaRetiro,
-									Date fechaDevolucion,
+									String fechaRetiro,
+									String fechaDevolucion,
 									int idSucursalDevolucion,
-									String categoriaVehiculo,
-									String patenteVehiculoAsignado,
-									String estadoReserva,
-									Date fechaCreacion,
-									Boleta idBoleta) {
+									String patenteVehiculo,
+									String estadoReserva) {
 		//Buscar reserva existente
 		Optional<Reserva> existenteOptional = reservaRepositorio.findById(id);
 		// Caso no existe
@@ -88,11 +69,8 @@ public class ReservaServicio {
 		existente.setFechaRetiro(fechaRetiro);
 		existente.setFechaDevolucion(fechaDevolucion);
 		existente.setIdSucursalDevolucion(idSucursalDevolucion);
-		existente.setCategoriaVehiculo(categoriaVehiculo);
-		existente.setPatenteVehiculoAsignado(patenteVehiculoAsignado);
+		existente.setPatenteVehiculo(patenteVehiculo);
 		existente.setEstadoReserva(estadoReserva);
-		existente.setFechaCreacion(fechaCreacion);
-		existente.setIdBoleta(idBoleta);
 
 		return reservaRepositorio.save(existente);
 	}

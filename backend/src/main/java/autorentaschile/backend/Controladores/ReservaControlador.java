@@ -24,11 +24,8 @@ public class ReservaControlador {
 				nuevaReserva.getFechaRetiro(),
 				nuevaReserva.getFechaDevolucion(),
 				nuevaReserva.getIdSucursalDevolucion(),
-				nuevaReserva.getCategoriaVehiculo(),
-				nuevaReserva.getPatenteVehiculoAsignado(),
-				nuevaReserva.getEstadoReserva(),
-				nuevaReserva.getFechaCreacion(),
-				nuevaReserva.getIdBoleta()
+				nuevaReserva.getPatenteVehiculo(),
+				nuevaReserva.getEstadoReserva()
 		);
 	}
 
@@ -42,11 +39,8 @@ public class ReservaControlador {
 				reserva.getFechaRetiro(),
 				reserva.getFechaDevolucion(),
 				reserva.getIdSucursalDevolucion(),
-				reserva.getCategoriaVehiculo(),
-				reserva.getPatenteVehiculoAsignado(),
-				reserva.getEstadoReserva(),
-				reserva.getFechaCreacion(),
-				reserva.getIdBoleta()
+				reserva.getPatenteVehiculo(),
+				reserva.getEstadoReserva()
 		);
 	}
 }

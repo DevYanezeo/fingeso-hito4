@@ -1,105 +1,81 @@
 <template>
-    <div class="flota">
-      <section class="search">
-        <SearchSection />
-      </section>
-      
-      <h1>TARIFAS Y VEHÍCULOS</h1>
-      <p>Aquí puedes encontrar todos los vehículos para arrendar.</p>
-      <img src="@/assets/flota.png" alt="Flota de vehículos" class="flota-img" />
-  
-      <!-- Nueva sección de filtrado -->
-      <section class="filter">
-        <h2>Filtrar por:</h2>
-        <div class="filter-options">
-          <div class="filter-option">
-            <label for="categoria">Categoría</label>
-            <select id="categoria" name="categoria">
-              <option value="economico">Económico</option>
-              <option value="de-lujo">De lujo</option>
-              <option value="suv">SUV</option>
-            </select>
-          </div>
-          <div class="filter-option">
-            <label for="transmision">Transmisión</label>
-            <select id="transmision" name="transmision">
-              <option value="manual">Manual</option>
-              <option value="automatica">Automática</option>
-            </select>
-          </div>
-          <div class="filter-option">
-            <label for="combustible">Combustible</label>
-            <select id="combustible" name="combustible">
-              <option value="gasolina">Gasolina</option>
-              <option value="diesel">Diésel</option>
-              <option value="electrico">Eléctrico</option>
-            </select>
-          </div>
-        </div>
-      </section>
+  <div class="flota">
+    <section class="search">
+      <SearchSection />
+    </section>
+
+    <h1>TARIFAS Y VEHÍCULOS</h1>
+    <p>Aquí puedes encontrar todos los vehículos para arrendar.</p>
+    <!-- Contenedor dinámico para los vehículos -->
+    <div class="vehiculos-container">
+      <CardCar 
+        v-for="(vehiculo, index) in vehiculos" 
+        :key="index" 
+        :vehiculo="vehiculo" 
+        @seleccionar="manejarSeleccion" 
+      />
     </div>
+  </div>
 </template>
-  
-  <script>
-  import SearchSection from '../User/SearchSection.vue';
-  
-  export default {
-    name: 'Flota',
-    components: {
-      SearchSection,
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .flota {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 18px;
-  }
-  .flota-img{
-    position: relative;
-    width: 30%;
-    height: auto;
-  }
-  .search {
-    margin-top: 30px;
-  }
-  
-  .filter {
-    margin-top: 40px;
-  }
-  
-  .filter h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .filter-options {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    align-items: center;
-  }
-  
-  .filter-option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .filter-option label {
-    margin-bottom: 3px;
-    font-weight: bold;
-  }
-  
-  .filter-option select {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  </style>
-  
-  
+
+<script>
+import SearchSection from '../User/SearchSection.vue';
+import CardCar from '../User/UserCardCar.vue'; // Asegúrate de importar el componente CardCar
+
+export default {
+  name: 'Flota',
+  components: {
+    SearchSection,
+    CardCar, // Incluye el componente CardCar
+  },
+  data() {
+    return {
+      vehiculos: [], // Lista de vehículos
+    };
+  },
+  methods: {
+    // Método para cargar los vehículos
+    async cargarVehiculos() {
+      try {
+        const response = await fetch("http://localhost:8080/api/vehiculo");
+        if (!response.ok) {
+          throw new Error("Error al cargar la flota");
+        }
+        const data = await response.json();
+        this.vehiculos = data; // Asigna los vehículos obtenidos a la propiedad vehiculos
+      } catch (error) {
+        console.error("Error al cargar la flota:", error);
+      }
+    },
+    manejarSeleccion(vehiculo) {
+      // Maneja la selección del vehículo
+      console.log("Vehículo seleccionado:", vehiculo);
+    },
+  },
+  mounted() {
+    // Cargar datos al montar el componente
+    this.cargarVehiculos();
+  },
+};
+</script>
+
+<style scoped>
+.flota {
+  background-image: url('/fondo.png'); 
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+}
+.flota-img {
+  position: relative;
+  width: 30%;
+  height: auto;
+}
+.vehiculos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
+</style>
