@@ -14,6 +14,9 @@
   
       <div class="navLinks">
         <div class="nav-link-container">
+          <router-link to="/" class="nav-link">Rent a Car</router-link>
+        </div>
+        <div class="nav-link-container">
           <router-link to="/profile" class="nav-link">Mi Perfil</router-link>
         </div>
         <div class="nav-link-container">
@@ -21,9 +24,6 @@
         </div>
         <div class="nav-link-container">
           <router-link to="/sucursales" class="nav-link">Sucursales</router-link>
-        </div>
-        <div class="nav-link-container">
-          <router-link to="/workWithUs" class="nav-link">Trabaja Con Nosotros</router-link>
         </div>
         <div class="nav-link-container">
           <router-link to="/" class="nav-link" @click.prevent="logout">Cerrar Sesión</router-link>

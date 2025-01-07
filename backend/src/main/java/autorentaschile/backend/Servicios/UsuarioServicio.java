@@ -16,7 +16,7 @@ public class UsuarioServicio {
 	// Descripcion: Toma los datos del usuario, crea un objeto con estos y lo guarda en la base
 	// Salida: El usuario registrado
 	public Map<String, String> register(String rut, String nombre, String email, String celular, String password,
-										String direccion, String fechaNacimiento) {
+										String direccion, String fechaNacimiento, Long idRol) {
 		Map<String, String> response = new HashMap<>();
 
 		// Verificar si el correo ya está registrado
@@ -28,25 +28,14 @@ public class UsuarioServicio {
 			return response;
 		}
 
-		// Crear y guardar el nuevo usuario
-		Usuario usuario = new Usuario(rut, nombre, email, celular, password, direccion,null, fechaNacimiento);
+		// Crear y guardar el nuevo usuario con el rol recibido
+		Usuario usuario = new Usuario(rut, nombre, email, celular, password, direccion, idRol, fechaNacimiento);
 		usuarioRepositorio.save(usuario);
 
 		// Si el registro fue exitoso
 		response.put("status", "success");
 		response.put("message", "Usuario registrado exitosamente.");
 		return response;
-	}
-	// Validacion de rol cliente
-	public boolean isClient(long id) {
-		Usuario user = usuarioRepositorio.findById(id);
-		return user != null && user.getIdRol() == 1L;
-	}
-
-	// Validacion de rol Admin
-	public boolean isAdmin(long id) {
-		Usuario user = usuarioRepositorio.findById(id);
-		return user != null && user.getIdRol() == 2L;
 	}
 
 	// Metodo Inicio de Sesion
@@ -59,5 +48,9 @@ public class UsuarioServicio {
 		}
 		return false;
 	}
+	public Usuario findByEmail(String email) {
+		return usuarioRepositorio.findByEmail(email); // Devuelve el usuario o null si no existe
+	}
+
 
 }

@@ -33,7 +33,14 @@
           <p><strong>Email:</strong> {{ sucursal.email }}</p>
         </div>
         <div class="card-right">
-          <div class="map">Mapa de ubicación</div>
+          <div class="map">
+            <img 
+              v-if="sucursal.urlMapa" 
+              :src="`/sucursal/${sucursal.urlMapa}`" 
+              alt="Mapa de la sucursal" 
+              class="map-image"
+            />
+          </div>
         </div>
       </div>
     </main>
@@ -49,6 +56,7 @@ export default {
       sucursales: [], // Lista completa de sucursales cargadas
       filteredSucursales: [], // Lista de sucursales filtradas
     };
+    
   },
   methods: {
     // Función para cargar las sucursales desde el backend
@@ -82,6 +90,16 @@ export default {
   },
 };
 </script>
+
+<style>
+.map-image {
+  width: 100%;
+  max-width: 200px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
+
 
   <style scoped>
   /* Estilo general */
@@ -122,7 +140,7 @@ export default {
   .locations {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-around;
     gap: 20px;
   }
   
@@ -166,17 +184,12 @@ export default {
     background-color: #002346;
   }
   
-  .map {
-    width: 100%;
-    height: 150px;
-    background-color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    font-size: 14px;
-  }
-  
+  .map-image {
+  width: 100%;
+  max-width: 250px; /* Ajusta el tamaño según sea necesario */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
   /* Responsivo */
   @media (max-width: 768px) {
     .card {

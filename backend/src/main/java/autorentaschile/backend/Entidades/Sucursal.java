@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "sucursal")
 @Data
 @JsonIgnoreProperties({"sucursalVehiculo"})
-@AllArgsConstructor
 public class Sucursal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,17 +21,19 @@ public class Sucursal {
     private String direccion;
     private String telefono;
     private String email;
+    private String urlMapa;
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehiculo> sucursalVehiculo;
 
     public Sucursal() {
     }
 
-    public Sucursal(String nombre, String direccion, String telefono, String email, ArrayList<Vehiculo> vehiculosSucursal) {
-		this.nombre = nombre;
+    public Sucursal(String nombre, String direccion, String telefono, String email, String urlMapa, ArrayList<Vehiculo> vehiculosSucursal) {
+        this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
+        this.urlMapa = urlMapa;
         this.sucursalVehiculo = vehiculosSucursal;
     }
 
@@ -74,6 +75,14 @@ public class Sucursal {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUrlMapa() {
+        return urlMapa; // Getter para urlMapa
+    }
+
+    public void setUrlMapa(String urlMapa) {
+        this.urlMapa = urlMapa; // Setter para urlMapa
     }
 
     public List<Vehiculo> getSucursalVehiculo() {

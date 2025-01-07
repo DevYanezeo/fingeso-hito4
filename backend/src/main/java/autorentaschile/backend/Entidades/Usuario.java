@@ -36,6 +36,7 @@ public class Usuario {
 		this.celularUsuario = celularUsuario;
 		this.passwordUsuario = passwordUsuario;
 		this.direccionUsuario = direccionUsuario;
+		this.idRol = rolUsuario;
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
