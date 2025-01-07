@@ -1,14 +1,21 @@
 <template>
   <div id="app">
+    <!-- Si es Admin, mostrar AdminNavbar -->
     <template v-if="isAdmin">
       <AdminNavbar />
     </template>
+
+    <!-- Si está logueado pero no es Admin, mostrar UserLoggedNavbar -->
     <template v-else-if="isLoggedIn">
       <UserLoggedNavbar />
     </template>
+
+    <!-- Si no está logueado, mostrar GeneralNavbar -->
     <template v-else>
       <GeneralNavbar />
     </template>
+
+    <!-- Mostrar el contenido de las rutas -->
     <router-view />
     <Footer />
   </div>
@@ -23,25 +30,29 @@ import AdminNavbar from './components/Layout/AdminNavbar.vue';
 export default {
   name: 'App',
   components: {
-    UserLoggedNavbar,
     GeneralNavbar,
+    UserLoggedNavbar,
     Footer,
     AdminNavbar,
   },
   computed: {
+    // Verifica si el usuario está logueado a través del token
     isLoggedIn() {
-      // Verifica si hay un token en localStorage
       return !!localStorage.getItem('authToken');
     },
+    // Verifica si el rol del usuario es admin
     isAdmin() {
-      // Verifica si el rol es admin
       const userRole = localStorage.getItem('userRole');
-      return userRole === '2'; // Si el rol es 2, es admin
+      return userRole === 'admin' && this.isLoggedIn;
+    },
+    // Verifica si el rol del usuario es cliente
+    isClient() {
+      const userRole = localStorage.getItem('userRole');
+      return userRole === 'cliente' && this.isLoggedIn;
     }
   }
 };
 </script>
-
 
 <style>
 body {

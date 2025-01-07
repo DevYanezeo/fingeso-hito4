@@ -1,35 +1,38 @@
 <template>
-  <div class="tarjeta">
-    <!-- Contenedor con los datos importantes del vehículo -->
-    <div class="info-vehiculo">
-      <div class="imagenes">
-        <img 
-          v-if="vehiculo.imagenUrl" 
-          :src="`/Vehiculos/${vehiculo.imagenUrl}`" 
-          alt="Imagen del vehículo" 
-          class="vehiculo-imagen" 
-        />
-        <p class="marca-modelo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</p>
-      </div>
-      <div class="iconos">
-        <div><span>👥</span> {{ vehiculo.pasajeros }} PASAJEROS</div>
-        <div><span>🚪</span> {{ vehiculo.puertas }} PUERTAS</div>
-        <div><span>⛽</span> {{ vehiculo.combustible }}</div>
-        <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
-        <div><span>⚙️</span> {{ vehiculo.kilometraje }} KM</div>
+  <div class="carta-vehiculo">
+    <!-- Imagen del vehículo -->
+    <div class="car-image">
+      <img 
+        v-if="vehiculo.imagenUrl" 
+        :src="`/Vehiculos/${vehiculo.imagenUrl}`" 
+        alt="Imagen del vehículo" 
+        class="vehiculo-imagen" 
+      />
+      <div class="navegacion-imagen">
+        <button @click="cambiarImagen(-1)" class="btn-navegacion">&lt;</button>
+        <button @click="cambiarImagen(1)" class="btn-navegacion">&gt;</button>
       </div>
     </div>
-
-    <!-- Detalles adicionales del vehículo -->
-    <div class="detalles">
-      <div class="tarifa">
-        <h3><strong>Patente:</strong> {{ vehiculo.patente }}</h3>
-        <p>{{ vehiculo.estado }}</p>
-        <p class="tarifa-titulo">TARIFA DIARIA</p>
-        <p class="tarifa-precio">${{ vehiculo.tarifa }} <span>(IVA incluido)</span></p>
-        <p class="tarifa-sin-iva">${{ vehiculo.tarifaSinIva }} + IVA</p>
-        <button class="btn-seleccionar" @click="seleccionarVehiculo">SELECCIONAR</button>
-        <p class="terminos">Términos y condiciones</p>
+    <!-- Botones para modificar y eliminar -->
+    <div class="btn-container">
+      <button @click="modificarVehiculo" class="btn-modificar">Modificar</button>
+      <button @click="eliminarVehiculo" class="btn-eliminar">Eliminar</button>
+    </div>
+    <!-- Información textual -->
+    <div class="informacion">
+      <h2 class="categoria">Patente:{{ vehiculo.patente }}</h2>
+      <h3 class="categoria">{{ vehiculo.categoria }}</h3>
+      <h3 class="titulo">{{ vehiculo.marca }} {{ vehiculo.modelo }}</h3>
+      <h4 class="categoria">Kilometraje: {{ vehiculo.kilometraje }}</h4>
+      <div class="detalles">
+        <div class="tarifa">
+          <div class="iconos">
+            <div><span>👥</span> {{ vehiculo.pasajeros }} Pasajeros</div>
+            <div><span>🚪</span> {{ vehiculo.puertas }} Puertas</div>
+            <div><span>⛽</span> {{ vehiculo.combustible }}</div>
+            <div><span>⚙️</span> {{ vehiculo.transmision }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -37,131 +40,143 @@
 
 <script>
 export default {
-  name: "CardCar",
   props: {
     vehiculo: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   methods: {
-    seleccionarVehiculo() {
-      // Método para manejar el clic en "Seleccionar"
-      this.$emit("seleccionar", this.vehiculo);
+    modificarVehiculo() {
+      // Emite el evento para modificar el vehículo
+      this.$emit('modificar', this.vehiculo);
     },
-  },
+    eliminarVehiculo() {
+      // Emite el evento para eliminar el vehículo
+      this.$emit('eliminar', this.vehiculo);
+    }
+  }
 };
 </script>
 
 <style scoped>
-.tarjeta {
+.carta-vehiculo {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 16px;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  gap: 16px;
-  align-items: center;
+  overflow: hidden;
+  background-color: #003366f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 300px; /* Altura fija para todas las tarjetas */
+  padding: 15px;
+}
+
+.car-image {
+  position: relative;
+  display: flex;
+}
+
+.vehiculo-imagen {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.navegacion-imagen {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 10px;
 }
 
-.info-vehiculo {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.btn-navegacion {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
 }
 
-.imagenes {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: #e7e7e771;
-  padding: 20px;
-  height: 100px;
-  border: 0.5px solid #00000019;
-  border-radius: 6px;
-
-}
-
-.imagenes img {
-  max-width: 180px;
-  max-height: 100px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  padding: 10px;
-  margin: 30px;
-}
-
-.detalles {
+.informacion {
   flex: 1;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  justify-content: space-between;
+  color:#ffffffe0;
+}
+
+.titulo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color:#ffffffe0;
 }
 
 .iconos {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 16px;
+  flex-direction: row;
+  margin-bottom: 16px;
 }
 
 .iconos div {
-  font-size: 16px;
-  color: #000;
-  margin-right: 16px;
-}
-
-.tarifa {
-  background-color: #e7e7e771;
-  padding: 16px;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
-  border: 0.5px solid #00000019;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .tarifa-titulo {
   font-weight: bold;
   margin: 8px 0;
-  font-size: 18px;
 }
 
 .tarifa-precio {
-  color: #e60000;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 1.25rem;
+  color: #003366;
+  margin: 8px 0;
 }
 
-.tarifa-sin-iva {
-  font-size: 12px;
-  color: #777;
+.botones { 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
-
-.btn-seleccionar {
-  background-color: #e60000;
-  color: white;
+.btn-modificar {
+  background-color: #000000d8;
+  color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
+}
+
+.btn-eliminar {
+  background-color: #e21616d8;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+.texto-disponibilidad {
+  color: #d9534f;
+  font-size: 0.875rem;
   margin-top: 16px;
 }
 
-.btn-seleccionar:hover {
-  background-color: #cc0000;
-}
-
-.terminos {
-  font-size: 12px;
-  color: #777;
+.nota-impuestos {
+  color: #6c757d;
+  font-size: 0.75rem;
   margin-top: 8px;
 }
 </style>

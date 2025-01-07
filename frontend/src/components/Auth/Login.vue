@@ -35,6 +35,10 @@
         <button type="submit" class="login-button">Iniciar Sesión</button>
       </div>
 
+      <div v-if="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div>
+
       <div class="register-link">
         <p>¿No tienes una cuenta? <router-link to="/Register">Regístrate aquí</router-link></p>
       </div>
@@ -50,34 +54,44 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
     async submitForm() {
       try {
+        // Hacemos la solicitud POST para iniciar sesión
         const response = await axios.post('http://localhost:8080/api/usuarios/login', {
           email: this.email,
           passwordUsuario: this.password
         });
 
-        if (response.data) {
-          // Guardamos el correo y el rol en el localStorage
+        // Verificamos la respuesta del backend
+        if (response.data.status === 'success') {
+          // Guardamos el correo, el rol y el token en el localStorage
           localStorage.setItem('userEmail', this.email);
-          localStorage.setItem('authToken', 'your-token'); // Puedes poner tu token si tienes uno
+          localStorage.setItem('authToken', 'your-token'); // Si tienes un token, guárdalo
 
-          // Si es cliente o admin, lo guardamos también
-          const role = response.data.role; // Aquí es donde esperas el rol desde el backend
+          // Obtiene el rol del usuario desde la respuesta del backend
+          const role = response.data.rol;
           localStorage.setItem('userRole', role);
 
-          // Redirigir al home
-          this.$router.push('/'); // Redirigir al home
-
+          // Redirige al home o a la página correspondiente según el rol
+          if (role === 'admin') {
+            this.$router.push('/AdminDashboard');  // Redirige al panel de admin
+          } else if (role === 'cliente') {
+            this.$router.push('/');  // Redirige al panel del cliente
+          } else {
+            this.$router.push('/');  // Redirige al home por defecto
+          }
         } else {
-          alert('Credenciales inválidas. Por favor, revisa tu correo y contraseña.');
+          // Si el login falla, muestra un mensaje de error
+          this.errorMessage = response.data.message || 'Credenciales inválidas.';
         }
       } catch (error) {
-        alert('Hubo un error en el proceso de inicio de sesión. Por favor, intenta de nuevo.');
+        // Si ocurre un error en la petición
+        this.errorMessage = 'Hubo un error en el proceso de inicio de sesión. Por favor, intenta de nuevo.';
         console.error(error);
       }
     }

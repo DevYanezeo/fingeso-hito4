@@ -39,8 +39,9 @@
                 v-for="vehiculo in vehiculosCategoria" 
                 :key="vehiculo.id" 
                 :vehiculo="vehiculo" 
+                @modificar="abrirFormularioIngreso(vehiculo)" 
                 @eliminar="eliminarVehiculo(vehiculo)" />
-              </div>
+            </div>
           </div>
         </div>
         <!-- Mensaje si no hay vehículos en esta sucursal -->
@@ -99,168 +100,165 @@
 </template>
 
 
-<script>
-import CardCar from './AdminCardCar.vue';  // Asegúrate de importar el componente CardCar
+  <script>
+  import CardCar from './AdminCardCar.vue';  // Asegúrate de importar el componente CardCar
 
-export default {
-  name: 'ManageFleet',
-  components: {
-    CardCar  // Declarar el componente para su uso en este archivo
-  },
-  data() {
-    return {
-      sucursales: [], 
-      selectedSucursalId: '',
-      searchResults: null, 
-      vehiculos: [], 
-      formularioVisible: false, 
-      nuevoVehiculo: {
-        id: null,
-        patente: '', 
-        marca: '',
-        modelo: '',
-        categoria: '',
-        estado: '',
-        sucursalId: null,
-        transmision: '',
-        combustible: ''
-      },
-      agrupadosPorCategoria: {}
-    };
-  },
-  mounted() {
-    this.cargarSucursales();
-  },
-  methods: {
-    // Carga las sucursales disponibles
-    async cargarSucursales() {
-      try {
-        const response = await fetch('http://localhost:8080/api/sucursal');
-        const data = await response.json();
-        this.sucursales = data;
-      } catch (error) {
-        console.error('Error al cargar las sucursales:', error);
-      }
+  export default {
+    name: 'ManageFleet',
+    components: {
+      CardCar  // Declarar el componente para su uso en este archivo
     },
-    // Busca detalles de la sucursal seleccionada y sus vehículos
-    async buscarSucursal() {
-      if (!this.selectedSucursalId) {
-        return;
-      }
-      try {
-        const sucursalResponse = await fetch(`http://localhost:8080/api/sucursal/${this.selectedSucursalId}`);
-        const sucursalData = await sucursalResponse.json();
-        this.searchResults = sucursalData;
-
-        const vehiculosResponse = await fetch(`http://localhost:8080/api/vehiculo/sucursal/${this.selectedSucursalId}`);
-        const vehiculosData = await vehiculosResponse.json();
-        this.vehiculos = vehiculosData;
-        this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
-      } catch (error) {
-        console.error('Error al buscar la sucursal o sus vehículos:', error);
-      }
-    },
-    agruparPorCategoria(vehiculos) {
-      return vehiculos.reduce((agrupados, vehiculo) => {
-        const categoria = vehiculo.categoria || 'Sin categoría'; // Si no tiene categoría, asignamos 'Sin categoría'
-        if (!agrupados[categoria]) {
-          agrupados[categoria] = [];
-        }
-        agrupados[categoria].push(vehiculo);
-        return agrupados;
-      }, {});
-    },
-    // Abre el formulario de ingreso de vehículo
-    abrirFormularioIngreso(vehiculo = null) {
-      this.formularioVisible = true;
-      if (vehiculo) {
-        this.nuevoVehiculo = { ...vehiculo };
-      } else {
-        this.nuevoVehiculo = {
+    data() {
+      return {
+        sucursales: [], 
+        selectedSucursalId: '',
+        searchResults: null, 
+        vehiculos: [], 
+        formularioVisible: false, 
+        nuevoVehiculo: {
           id: null,
-          patente: '',
+          patente: '', 
           marca: '',
           modelo: '',
           categoria: '',
           estado: '',
-          sucursalId: this.selectedSucursalId,
+          sucursalId: null,
           transmision: '',
           combustible: ''
-        };
-      }
+        },
+        agrupadosPorCategoria: {}
+      };
     },
-    // Cierra el formulario de ingreso de vehículo
-    cerrarFormularioIngreso() {
-      this.formularioVisible = false;
+    mounted() {
+      this.cargarSucursales();
     },
-    // Envía los datos para registrar o modificar un vehículo
-    async ingresarVehiculo() {
-      try {
-        let response;
-        if (this.nuevoVehiculo.id) {
-          response = await fetch(`http://localhost:8080/api/vehiculo/modificarVehiculo`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ...this.nuevoVehiculo,
-              sucursal: { id: this.nuevoVehiculo.sucursalId }
-            })
-          });
-        } else {
-          response = await fetch('http://localhost:8080/api/vehiculo/registrarVehiculo', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ...this.nuevoVehiculo,
-              sucursal: { id: this.nuevoVehiculo.sucursalId }
-            })
-          });
+    methods: {
+      // Carga las sucursales disponibles
+      async cargarSucursales() {
+        try {
+          const response = await fetch('http://localhost:8080/api/sucursal');
+          const data = await response.json();
+          this.sucursales = data;
+        } catch (error) {
+          console.error('Error al cargar las sucursales:', error);
         }
+      },
+      // Busca detalles de la sucursal seleccionada y sus vehículos
+      async buscarSucursal() {
+        if (!this.selectedSucursalId) {
+          return;
+        }
+        try {
+          const sucursalResponse = await fetch(`http://localhost:8080/api/sucursal/${this.selectedSucursalId}`);
+          const sucursalData = await sucursalResponse.json();
+          this.searchResults = sucursalData;
 
-        if (response.ok) {
-          const vehiculoGuardado = await response.json();
-          if (this.nuevoVehiculo.id) {
-            const index = this.vehiculos.findIndex(v => v.id === vehiculoGuardado.id);
-            if (index !== -1) {
-              this.vehiculos.splice(index, 1, vehiculoGuardado);
-            }
-          } else {
-            this.vehiculos.push(vehiculoGuardado);
-          }
+          const vehiculosResponse = await fetch(`http://localhost:8080/api/vehiculo/sucursal/${this.selectedSucursalId}`);
+          const vehiculosData = await vehiculosResponse.json();
+          this.vehiculos = vehiculosData;
           this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
-          this.cerrarFormularioIngreso();
-        } else {
-          console.error('Error al guardar el vehículo');
+        } catch (error) {
+          console.error('Error al buscar la sucursal o sus vehículos:', error);
         }
-      } catch (error) {
-        console.error('Error al ingresar/modificar el vehículo:', error);
-      }
-    },
-    eliminarVehiculo(vehiculo) {
-      if (confirm('¿Seguro que deseas eliminar este vehículo?')) {
-        fetch(`http://localhost:8080/api/vehiculo/eliminarVehiculo/${vehiculo.id}`, {
-          method: 'DELETE'
-        })
-          .then(response => {
-            if (response.ok) {
-              this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculo.id);
-              this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
+      },
+      agruparPorCategoria(vehiculos) {
+        return vehiculos.reduce((agrupados, vehiculo) => {
+          const categoria = vehiculo.categoria || 'Sin categoría'; // Si no tiene categoría, asignamos 'Sin categoría'
+          if (!agrupados[categoria]) {
+            agrupados[categoria] = [];
+          }
+          agrupados[categoria].push(vehiculo);
+          return agrupados;
+        }, {});
+      },
+      // Abre el formulario de ingreso de vehículo
+      abrirFormularioIngreso(vehiculo = null) {
+        this.formularioVisible = true;
+        if (vehiculo) {
+          this.nuevoVehiculo = { ...vehiculo };
+        } else {
+          this.nuevoVehiculo = {
+            id: null,
+            patente: '',
+            marca: '',
+            modelo: '',
+            categoria: '',
+            estado: '',
+            sucursalId: this.selectedSucursalId,
+            transmision: '',
+            combustible: ''
+          };
+        }
+      },
+      // Cierra el formulario de ingreso de vehículo
+      cerrarFormularioIngreso() {
+        this.formularioVisible = false;
+      },
+      // Envía los datos para registrar o modificar un vehículo
+      async ingresarVehiculo() {
+        try {
+          let response;
+          if (this.nuevoVehiculo.id) {
+            response = await fetch(`http://localhost:8080/api/vehiculo/modificarVehiculo`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                ...this.nuevoVehiculo,
+                sucursal: { id: this.nuevoVehiculo.sucursalId }
+              })
+            });
+          } else {
+            response = await fetch('http://localhost:8080/api/vehiculo/registrarVehiculo', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                ...this.nuevoVehiculo,
+                sucursal: { id: this.nuevoVehiculo.sucursalId }
+              })
+            });
+          }
+
+          if (response.ok) {
+            const vehiculoGuardado = await response.json();
+            if (this.nuevoVehiculo.id) {
+              const index = this.vehiculos.findIndex(v => v.id === vehiculoGuardado.id);
+              if (index !== -1) {
+                this.vehiculos.splice(index, 1, vehiculoGuardado);
+              }
             } else {
-              console.error('Error al eliminar el vehículo');
+              this.vehiculos.push(vehiculoGuardado);
             }
-          })
-          .catch(error => {
-            console.error('Error al eliminar el vehículo:', error);
+            this.agrupadosPorCategoria = this.agruparPorCategoria(this.vehiculos);
+            this.cerrarFormularioIngreso();
+          } else {
+            console.error('Error al guardar el vehículo');
+          }
+        } catch (error) {
+          console.error('Error al ingresar/modificar el vehículo:', error);
+        }
+      },
+      async eliminarVehiculo(vehiculo) {
+        console.log('ID del vehículo a eliminar:', vehiculo.id);
+        try {
+          const response = await fetch(`http://localhost:8080/api/vehiculo/eliminarVehiculo?id=${vehiculo.id}`, {
+            method: 'DELETE'
           });
+          if (response.ok) {
+            this.vehiculos = this.vehiculos.filter(v => v.id !== vehiculo.id);
+          } else {
+            console.error('Error al eliminar el vehículo'); 
+          }
+        } catch (error) {
+          console.error('Error al eliminar el vehículo:', error);
+        }
       }
     }
-  }
-};
-</script>
+  };
+  </script>
 
 
 <style scoped>
@@ -366,14 +364,20 @@ input:focus {
 
 .vehiculos-grid {
   display: flex;
-  flex-wrap: wrap; /* Permite que las tarjetas se ajusten cuando no hay suficiente espacio en una fila */
-  gap: 20px; /* Espacio entre las tarjetas */
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center; /* Centrar los vehículos dentro de la grid */
 }
+
 
 .btn-modificar {
   background-color: #003366;
   color: white;
+  padding: 10px 20px;
   border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-modificar:hover {
@@ -427,7 +431,7 @@ input:focus {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  width: 500px;
+  width: 400px;
 }
 
 .formulario-ingreso input,
@@ -437,12 +441,6 @@ input:focus {
   margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 5px;
-}
-
-.formulario-ingreso button {
-  width: 100%;
-  background-color: #007bff;
-  color: white;
 }
 
 .formulario-ingreso button[type="submit"] {
